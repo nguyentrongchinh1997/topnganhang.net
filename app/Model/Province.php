@@ -22,4 +22,9 @@ class Province extends Model
     {
         return $this->hasManyThrough(Branch::class, District::class);
     }
+
+    public function atm()
+	{
+		return $this->hasMany(Atm::class);
+	}
 }

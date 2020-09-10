@@ -247,7 +247,22 @@ hr {
     -webkit-box-shadow: none;
             box-shadow: none; }
 
+.banner{
+  background-size: contain !important;
+  background-image: url('../../images/banner.jpg');
+}
 /* input-group-prepend */
+.news-item-sidebar p{
+  margin-top: -7px;
+  max-height: 75px;
+  overflow: hidden;
+}
+.news-item-sidebar a{
+  color: #333;
+}
+.news-item-sidebar a:hover{
+  color: #ff8a00;
+}
 .input-group-prepend .input-group-text,
 .input-group-append .input-group-text {
   width: 50px;
@@ -2249,7 +2264,7 @@ button {
   display: block;
 }
 .job-list.border a{
-  color: #898989;
+  color: #686868;
 }
 .job-list.border:hover h2{
   color: #ff8a00;
@@ -4608,6 +4623,11 @@ iframe {
 .blog-detail .blog-post .blog-post-category a {
   color: #ff8a00;
   font-weight: 600; }
+.blog-detail img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .blog-post .blog-post-footer {
   display: -webkit-box;
@@ -5997,6 +6017,12 @@ iframe {
     border-bottom: 1px solid #eeeeee !important; }
   .border-lg-left {
     border-left: 1px solid #eeeeee !important; } }
+
+@media (max-width: 768px) {
+  .banner{
+    background-image: unset;
+  }
+}
 
 @media (min-width: 768px) {
   .border-md-top-0 {

@@ -15,20 +15,23 @@ use View;
 use App\Services\SiteService;
 use App\Model\Atm;
 use Response;
+use Cache;
 
 class SiteController extends Controller
 {
     public function __construct(SiteService $siteService)
     {
         $this->siteService = $siteService;
+        $cache = Cache::remember('fixed', 30, function() {
+            return [
+                    'bank' => Bank::all(),
+                    'province' => Province::all(),
+                    'latestNews' => News::latest()->take(6)->get(),
+                    'swift_code' => News::where('id', 6)->first(),
+            ];
+        });
         View::share('viewShare', 
-            [
-                'bank' => Bank::all(),
-                'provinceThebank' => ProvinceThebank::all(),
-                'province' => Province::all(),
-                'latestNews' => News::latest()->take(6)->get(),
-                'swift_code' => News::where('id', 6)->first(),
-            ]
+            $cache
         );
     }
 
@@ -86,13 +89,18 @@ class SiteController extends Controller
                                 ]);
     }
 
-    public function interestRate($bank, $bankId)
+    public function interestRate($bankName, $bankId)
     {
         $latestNews = News::latest()->take(6)->get();
+        $branchAll = Branch::where('bank_id', $bankId)->get();
+        $branchRandom = $branchAll->random(10);
+        $bank = Bank::findOrFail($bankId);
 
         return view('pages.interests.interest_rate', [
                                                 'interestRate' => InterestRate::where('bank_id', $bankId)->first(),
-                                                'latestNews' => $latestNews
+                                                'latestNews' => $latestNews,
+                                                'branchRandom' => $branchRandom,
+                                                'bank' => $bank
                                             ]);
     }
 
@@ -146,7 +154,7 @@ class SiteController extends Controller
 
     public function getDistrictTheBank(Request $request)
     {
-        $district = DistrictTheBank::where('province_the_bank_id', $request->province_id)->get();
+        $district = District::where('province_id', $request->province_id)->get();
 
         return view('pages.banks.district_the_bank', ['district' => $district, 'district_id' => $request->district_id]);        
     }
@@ -202,12 +210,12 @@ class SiteController extends Controller
         if ($inputs['bank'] != '' && $inputs['province'] == '' && $inputs['district'] == '') {
             return redirect()->route('bank-atm', ['bank' => str_slug($bank->name_en), 'id' => $bank->id]);
         } else if ($inputs['bank'] != '' && $inputs['province'] != '' && $inputs['district'] == '') {
-            $province = ProvinceTheBank::findOrFail($inputs['province']);
+            $province = Province::findOrFail($inputs['province']);
             
             return redirect()->route('province-atm', ['bank' => str_slug($bank->name_en), 'province' => $province->slug, 'bank_id' => $bank->id, 'province_id' => $province->id]);
         } else if ($inputs['bank'] != '' && $inputs['province'] != '' && $inputs['district'] != '') {
-            $province = ProvinceTheBank::findOrFail($inputs['province']);
-            $district = DistrictTheBank::findOrFail($inputs['district']);
+            $province = Province::findOrFail($inputs['province']);
+            $district = District::findOrFail($inputs['district']);
 
             return redirect()->route('district-atm', ['bank' => str_slug($bank->name_en), 'district' => $district->slug, 'province' => $province->slug, 'bank_id' => $bank->id, 'province_id' => $province->id, 'district_id' => $district->id]);
         }

@@ -49,13 +49,25 @@ class SiteService
 	public function home()
 	{
 		$exchangeRate = $this->exchangeRateModel->where('bank_id', 1)->latest('date')->first();
+		$bankId = rand(1, 11);
 
 		return [
 			'exchangeRate' => $exchangeRate,
 			'banks' => $this->bankModel->all(),
+			'bank' => $this->bankModel->findOrfail($bankId),
 			'provinces' => $this->provinceModel->all(),
 			'districtHcm' => $this->districtModel->where('province_id', 2)->get(),
 			'news' => $this->newsModel->latest()->take(6)->get(),
+			'vietinbankBranchHn' => $this->provinceModel->where('id', 3)
+														->with(['branch' => function($query) use ($bankId) {
+															$query->where('bank_id', $bankId)->limit(18);
+														}])
+														->first(),
+			'vietinbankBranchHcm' => $this->provinceModel->where('id', 2)
+														 ->with(['branch' => function($query) use ($bankId) {
+															$query->limit(18);
+														 }])
+														 ->first()
 		];
 	}
 
@@ -106,11 +118,15 @@ class SiteService
 													->latest('date')
 													->first();
 			$latestNews = $this->newsModel->latest()->take(6)->get();
+			$branchAll = $this->branchModel->where('bank_id', $bankId)
+										   ->get();
+			$branchRandom = $branchAll->random(10);
 			
 			return [
 				'bank' => $bank,
 				'exchangeRate' => $exchangeRate,
-				'latestNews' => $latestNews
+				'latestNews' => $latestNews,
+				'branchRandom' => $branchRandom
 			];
 		} catch (\Throwable $th) {
 			return NULL;
@@ -125,12 +141,16 @@ class SiteService
 													->where('date', $date)
 													->first();
 			$latestNews = $this->newsModel->latest()->take(6)->get();
+			$branchAll = $this->branchModel->where('bank_id', $bankId)
+										   ->get();
+			$branchRandom = $branchAll->random(10);
 
 			return [
 				'bank' => $bank,
 				'exchangeRate' => $exchangeRate,
 				'date' => $date,
 				'latestNews' => $latestNews,
+				'branchRandom' => $branchRandom
 			];
 		} catch (\Throwable $th) {
 			return NULL;
@@ -162,25 +182,41 @@ class SiteService
 	{
 		try {
 			$branch = $this->branchModel->findOrFail($branchId);
-			$otherBranch = $this->branchModel->where('id', '!=', $branchId)
-											 ->where('bank_id', $branch->bank_id)
-											 ->get()
-											 ->random(15);
+			$districtSameBranchs = $this->branchModel->where('id', '!=', $branchId)
+											 		 ->where('bank_id', $branch->bank_id)
+											 		 ->where('district_id', $branch->district_id)
+													 ->get();
 			
+			if (count($districtSameBranchs) >= 10) {
+				$districtSameBranchs = $districtSameBranchs->random(10);
+			}
+			$otherBranchs = $this->branchModel->where('id', '!=', $branchId)
+											  ->where('bank_id', $branch->bank_id)
+											  ->get();
+			if (count($otherBranchs) >= 10) {
+				$otherBranchs = $otherBranchs->random(10);
+			}
+
 			return [
 				'branch' => $branch,
-				'otherBranch' => $otherBranch
+				'districtSameBranchs' => $districtSameBranchs,
+				'otherBranchs' => $otherBranchs
 			];
 		} catch (\Throwable $th) {
-			return NULL;
+			return $th->getMessage();
 		}
 	}
 
 	public function bankIntro($bankId)
 	{
 		try {
+			$bank = $this->bankModel->findOrFail($bankId);
+			$branchAll = $this->branchModel->where('bank_id', $bankId)
+									  ->get();
+			$branchRandom = $branchAll->random(10);
 			return [
-				'bank' => $this->bankModel->findOrFail($bankId),
+				'bank' => $bank,
+				'branchRandom' => $branchRandom,
 			];
 		} catch (\Throwable $th) {
 			return NULL;
@@ -230,9 +266,13 @@ class SiteService
 	{
 		try {
 			$atm = $this->atmModel->findOrFail($id);
-
+			$otherAtm = $this->atmModel->where('id', '!=', $id)
+									   ->where('province_id', $atm->province_id)
+									   ->get()
+									   ->random(20);
 			return [
-				'atm' => $atm
+				'atm' => $atm,
+				'otherAtm' => $otherAtm
 			];
 		} catch (\Throwable $th) {
 			return NULL;
@@ -242,18 +282,20 @@ class SiteService
 	public function provinceAtm($bank, $province, $bankId, $provinceId)
 	{
 		try {
-			$districts = $this->districtTheBankModel->where('province_the_bank_id', $provinceId)
-													->whereHas('atm', function($query) use ($bankId){
-														$query->where('bank_id', $bankId);
-													})
-													->get();
-			$atms = $this->atmModel->where('province_the_bank_id', $provinceId)
+			
+			$districts = $this->districtModel->where('province_id', $provinceId)
+											->whereHas('atm', function($query) use ($bankId){
+												$query->where('bank_id', $bankId);
+											})
+											->get();
+			$atms = $this->atmModel->where('province_id', $provinceId)
+								   ->where('bank_id', $bankId)
 								   ->paginate(30);
 
 			return [
 				'bank' => $this->bankModel->findOrFail($bankId),
 				'districts' => $districts,
-				'province' => $this->provinceTheBankModel->findOrFail($provinceId),
+				'province' => $this->provinceModel->findOrFail($provinceId),
 				'atms' => $atms
 			];
 		} catch (\Throwable $th) {
@@ -265,16 +307,16 @@ class SiteService
 	{
 		try {
 			$atms = $this->atmModel->where('bank_id', $bankId)
-								   ->where('province_the_bank_id', $provinceId)
-								   ->where('district_the_bank_id', $districtId)
+								   ->where('province_id', $provinceId)
+								   ->where('district_id', $districtId)
 								   ->paginate(20);
 			$news = $this->newsModel->latest()->take(6)->get();
 
 			return [
 				'bank' => $this->bankModel->findOrFail($bankId),
 				'atms' => $atms,
-				'district' => $this->districtTheBankModel->findOrFail($districtId),
-				'province' => $this->provinceTheBankModel->findOrFail($provinceId),
+				'district' => $this->districtModel->findOrFail($districtId),
+				'province' => $this->provinceModel->findOrFail($provinceId),
 				'news' => $news
 			];
 		} catch (\Throwable $th) {
@@ -285,15 +327,17 @@ class SiteService
 	public function bankAtm($bankId)
 	{
 		try {
-			$provinces = $this->provinceTheBankModel->whereHas('atm', function($query) use ($bankId){
-														$query->where('bank_id', $bankId);
-													})
-													->get();
+			$provinces = $this->provinceModel->whereHas('atm', function($query) use ($bankId){
+												$query->where('bank_id', $bankId);
+											 })
+											 ->get();
+			$atms = $this->atmModel->where('bank_id', $bankId)->get()->random(20);
 			$bank = $this->bankModel->findOrFail($bankId);
 
 			return [
 				'provinces' => $provinces,
-				'bank' => $bank
+				'bank' => $bank,
+				'atms' => $atms
 			];
 		} catch (\Throwable $th) {
 			//dd($th->getMessage());
@@ -304,21 +348,26 @@ class SiteService
 	public function atmList($request)
 	{
 		$banks = $this->bankModel->all();
-		$provinceThebank = $this->provinceTheBankModel->all();
-		$districtTheBank = $this->districtTheBankModel->all();
+		$provinceThebank = $this->provinceModel->all();
+		$districtTheBank = $this->districtModel->all();
+		$bank_id = rand(1, 3);
+		$atms = $this->atmModel->where('bank_id', $bank_id)
+							   ->get()
+							   ->random(30);
 		
 		return [
 			'banks' => $banks,
 			'provinceThebank' => $provinceThebank,
 			'districtTheBank' => $districtTheBank,
+			'atms' => $atms
 		];
 	}
 
 	public function atmProvince($province)
 	{
 		try {
-			$province = $this->provinceTheBankModel->where('slug', $province)->first();
-			$atmProvince = $this->atmModel->where('province_the_bank_id', $province->id)->paginate(30);
+			$province = $this->provinceModel->where('slug', $province)->first();
+			$atmProvince = $this->atmModel->where('province_id', $province->id)->paginate(30);
 
 			return [
 				'province' => $province,

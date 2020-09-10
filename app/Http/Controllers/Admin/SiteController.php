@@ -96,6 +96,14 @@ class SiteController extends Controller
         return redirect()->route('admin.home')->with('success', 'Sửa thành công');
     }
 
+    public function newsDelete($newsId)
+    {
+        $news = News::findOrFail($newsId);
+        $news->delete();
+
+        return back()->with('success', 'Xóa thành công');
+    }
+
     public function newsAddForm()
     {
         return view('admin.pages.news_add');
@@ -103,12 +111,17 @@ class SiteController extends Controller
 
     public function newsAdd(Request $request)
     {
-        $inputs = $request->all();
-        $nameFile = $this->uploadImage($request->img, $request->title);
-        $inputs += ['slug' => str_slug($request->title), 'image' => $nameFile];
-        News::create($inputs);
+        try {
+            $inputs = $request->all();
+            $nameFile = $this->uploadImage($request->img, $request->title);
+            $inputs += ['slug' => str_slug($request->title), 'image' => $nameFile];
+            News::create($inputs);
 
-        return redirect()->route('admin.home')->with('success', 'Thêm thành công');
+            return redirect()->route('admin.home')->with('success', 'Thêm thành công');
+        } catch (\Throwable $th) {
+            return back()->withInput()->with('error', 'Thêm lỗi');
+        }
+        
     }
 
     public function uploadImage($image, $title)

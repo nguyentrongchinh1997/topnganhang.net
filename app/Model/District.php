@@ -23,4 +23,9 @@ class District extends Model
 	{
 		return $this->hasMany(Branch::class);
 	}
+
+	public function atm()
+	{
+		return $this->hasMany(Atm::class);
+	}
 }

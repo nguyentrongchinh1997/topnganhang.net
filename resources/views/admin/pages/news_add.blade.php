@@ -37,8 +37,8 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Tiêu đề <span class="mandatory">*</span></label>
-                                <input placeholder="Nhập tiêu đề..." required="required" type="text" class="form-control"
-                                    name="title">
+                                <input value="{{ old('title') }}" placeholder="Nhập tiêu đề..." required="required"
+                                    type="text" class="form-control" name="title">
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Hình ảnh <span class="mandatory">*</span></label>
@@ -48,24 +48,26 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Nguồn</label>
-                                <input type="text" class="form-control" name="author" placeholder="vd: báo lao động...">
+                                <input value="{{ old('author') }}" type="text" class="form-control" name="author"
+                                    placeholder="vd: báo lao động...">
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Từ khóa (nhập và ấn enter) <span
                                         class="mandatory">*</span></label>
-                                <input required="required" name="tags" type="text" id="tags2" class="tags">
+                                <input value="{{ old('tags') }}" required="required" name="tags" type="text" id="tags2"
+                                    class="tags">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Tóm tắt <span class="mandatory">*</span></label>
                         <textarea required="required" name="description" class="form-control ckeditor" rows="5"
-                            placeholder="Mô tả..."></textarea>
+                            placeholder="Mô tả...">{{ old('description') }}</textarea>
                     </div>
                     <div class="form-group">
                         <label>Nội dung <span class="mandatory">*</span></label>
                         <textarea required="required" name="content" id="content-ckeditor"
-                            class="form-control ckeditor"></textarea>
+                            class="form-control ckeditor">{{ old('content') }}</textarea>
                     </div>
                     <div class="form-group">
                         <center>

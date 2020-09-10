@@ -283,6 +283,94 @@ class CloneController extends Controller
     	}
     }
 
+    /**
+     * Ngân hàng không có trong ngan-hang.com: maritime bank
+     * Ngân hàng khác cấu trúc html với các ngân hàng còn lại: mbbank, seabank
+     * @return void
+     */
+    public function getAtm()
+    {
+        try {
+            $domain = 'https://mbbank.ngan-hang.com/atm';
+            //$domain = 'https://mbbank.ngan-hang.com';
+    		$html = file_get_html_custom($domain1);
+
+    		//foreach ($html->find('ul.list-cities li') as $tinh) { Dành cho seabnk và mbbank
+            foreach ($html->find('ul.s1_l li') as $tinh) {
+                /**
+                 * Dành cho mbbank và seabank
+                 * $province = trim($tinh->find('a', 0)->plaintext);
+                 * $province = trim(explode('(', $province)[0]);
+                 * $link = $domain . $tinh->find('a', 0)->href;
+                 */
+                $province = trim($tinh->find('a', 0)->plaintext);
+                $span = $tinh->find('span', 0)->plaintext;
+                $province = trim(\str_replace($span, '', $province));
+                $link = $tinh->find('a', 0)->href;
+                $provinceCheck = Province::where('slug', str_slug($province))->first();
+
+                if (!empty($provinceCheck)) {
+                    $this->districtAtm($link, $provinceCheck->id, $domain);
+                } else {
+                    $provinceResult = Province::create([
+                        'slug' => str_slug($province),
+                        'name' => $province
+                    ]);
+
+                    $this->districtAtm($link, $provinceResult->id, $domain);
+                }
+    		}
+        } catch (\Throwable $th) {
+            echo "Lỗi: " . $th->getMessage() . '<br>';
+            echo 'Dong: ' . $th->getLine() . '<br>';
+            echo 'link: ' . $link . '<hr>';
+        }
+    }
+
+    public function districtAtm($link, $provinceId, $domain)
+    {
+        $html = file_get_html_custom($link);
+
+    	foreach ($html->find('ul.s1_l li') as $district) {
+        //foreach ($html->find('.content table.table tr') as $district) { //dành cho seabank
+            /**
+             * Dành cho ngân hàng seabank
+             * $name = trim($district->plaintext);
+             * $rigth = $district->find('.cright', 0)->plaintext;
+             * $name = str_replace($rigth, '', $name);
+             * $link = $domain . $district->find('a', 0)->href;
+             */
+            
+
+            /**
+             * Dành cho các ngân hàng còn lại
+             * $name = trim($district->find('a', 0)->plaintext);
+             * $span = $district->find('span', 0)->plaintext;
+             * $name = trim(\str_replace($span, '', $name));
+             */
+            $name = trim($district->find('a', 0)->plaintext);
+            $span = $district->find('span', 0)->plaintext;
+            $name = trim(\str_replace($span, '', $name));
+            $link = $district->find('a', 0)->href;
+            $checkDistrict = District::where('slug', str_slug($name))
+                                      ->where('province_id', $provinceId)
+                                      ->first();
+
+            if (!empty($checkDistrict)) {
+                $this->atmAdd($link, $checkDistrict->id, $domain, $provinceId);
+            } else {
+                $districtResult = District::create(
+                    [
+                        'slug' => str_slug($name),
+                        'province_id' => $provinceId,
+                        'name' => $name,
+                    ]
+                );
+                $this->atmAdd($link, $districtResult->id, $domain, $provinceId);
+            }
+		}
+    }
+
     public function district($link, $province, $domain)
     {
     	$html = file_get_html_custom($link);
@@ -340,6 +428,97 @@ class CloneController extends Controller
                 
                 echo "Thêm thành công: $link<hr>";
 			}
+    	}
+    }
+
+    public function msm()
+    {
+        try {
+            $atmTheBank = \DB::table('atms_old')->where('bank_id', 8)->get();
+
+            foreach ($atmTheBank as $atm) {
+                $districtTheBankSlug = \DB::table('district_thebank')->where('id', $atm->district_the_bank_id)->first();
+                $district = District::where('slug', trim($districtTheBankSlug->slug))->first();
+                $provinceId = $district->province_id;
+
+                Atm::updateOrCreate(
+                    [
+                        'bank_id' => 8,
+                        'district_id' => $district->id,
+                        'province_id' => $provinceId,
+                        'slug' => str_slug($atm->address),
+                    ],
+                    [
+                        'address' => $atm->address
+                    ]
+                );
+            }
+        } catch (\Throwable $th) {
+            echo $th->getMessage() . '<hr>';
+        }
+    }
+
+    public function atmAdd($link, $districtId, $domain, $provinceId)
+    {
+        $bank_id = 6;
+        $other_info = NULL;
+    	$html = file_get_html_custom($link);
+
+        /**
+         * Dành cho seabank và mbbank
+         * if (!empty($html->find('ul.s2_l'))) {
+		    *foreach ($html->find('ul.s2_l li') as $li) {
+         * if (!empty($html->find('.content ul li.list-group-item'))) {
+	     * foreach ($html->find('.content ul li.list-group-item') as $li) {
+         */
+
+        /**
+         * Dành cho ngân hàng còn lại
+         */
+    	if (!empty($html->find('ul.s2_l'))) {
+		    foreach ($html->find('ul.s2_l li') as $li) {
+                /**
+                 * Dành cho seabank
+                 */
+                    // $name = $li->find('a', 0)->plaintext;
+                    // $address = trim($li->find('p', 0)->plaintext);
+                    // $url = $domain . $li->find('a', 0)->href;
+                    // $html = file_get_html_custom($url);
+                    // $other_info = '';
+
+                    // foreach ($html->find('.content p') as $info) {
+                    //     $other_info = $other_info . $info->outertext;
+                    // }
+
+                /**
+                 * Dành cho ngân hàng còn lại
+                 * $address = $li->find('p', 0)->plaintext;
+                 * $name = $li->find('h3', 0)->plaintext;
+                 * $url = $li->find('a', 0)->href;
+                 * $other_info = $this->getOtherInfo($url);
+                 */
+                $address = $li->find('p', 0)->plaintext;
+                $name = $li->find('h3', 0)->plaintext;
+                $url = $li->find('a', 0)->href;
+                $other_info = $this->getOtherInfo($url);
+
+				Atm::updateOrCreate(
+					[
+                        'bank_id' => $bank_id,
+                        'district_id' => $districtId,
+                        'province_id' => $provinceId,
+                        'slug' => str_slug($name),
+					],
+					[
+                        'name' => $name,
+                        'address' => $address,
+                        'other_info' => $other_info
+					]
+                );
+                
+                echo "Thêm thành công: $link<hr>";
+            }
+            
     	}
     }
 

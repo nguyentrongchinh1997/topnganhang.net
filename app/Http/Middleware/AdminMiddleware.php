@@ -15,9 +15,11 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->check()) {
+        if (auth()->check() && auth()->user()->level > 0) {
             return $next($request);
         } else {
+            auth()->logout();
+
             return redirect('/login');
         }
     }

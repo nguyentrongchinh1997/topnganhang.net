@@ -8,7 +8,7 @@
 <!--=================================
 	Tìm kiếm chi nhánh ngân hàng -->
 	<section class="position-relative">
-		<div class="banner bg-holder bg-overlay-black-20 text-dark" style="background-image: url(assets/images/bg/banner-02.jpg);">
+		<div class="banner bg-holder bg-overlay-black-20 text-dark" style="">
 			<div class="container">
 				<div class="row">
 					<div class="col-xl-9 text-left">
@@ -63,10 +63,9 @@
 		</section>
 <!--=================================
 	end -->
-
 <!--=================================
 	Browse-job -->
-	<section class="space-ptb">
+	<section class="space-ptb" style="margin-top: 20px">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
@@ -126,6 +125,74 @@
 			</div>
 		</div>
 	</section>
+	<section class="space-ptb">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="section-title-02">
+					<h2>Chi nhánh, PGD ngân hàng {{$bank->name_en}} tại Hà Nội</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				@foreach($vietinbankBranchHn->branch as $branchItem)
+					<div class="col-lg-4 atm-district">
+						<div class="job-list border" style="width: 100%">
+							<div class="job-list-details">
+								<a href="{{route('bank-branch-detail', ['bank_name' => str_slug($branchItem->bank->name_en), 'province' => $branchItem->district->province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
+									<div class="job-list-info">
+										<div class="job-list-title">
+											<h2 title="{{$branchItem->name}} - Ngân hàng {{$branchItem->bank->name_en}}" class="mb-0">{{$branchItem->name}}</h2>
+										</div>
+										<div class="job-list-option">
+											<ul class="list-unstyled">
+												<li><i class="fas fa-map-marker-alt pr-1"></i>{{$branchItem->address}}</li>
+											</ul>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+					<br>
+				@endforeach
+			</div>
+		</div>
+	</section>
+	<section class="space-ptb">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="section-title-02">
+					<h2>Chi nhánh, PGD ngân hàng {{$bank->name_en}} tại TP Hồ Chí Minh</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				@foreach($vietinbankBranchHcm->branch as $branchItem)
+					<div class="col-lg-4 atm-district">
+						<div class="job-list border" style="width: 100%">
+							<div class="job-list-details">
+								<a href="{{route('bank-branch-detail', ['bank_name' => str_slug($branchItem->bank->name_en), 'province' => $branchItem->district->province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
+									<div class="job-list-info">
+										<div class="job-list-title">
+											<h2 title="{{$branchItem->name}} - Ngân hàng {{$branchItem->bank->name_en}}" class="mb-0">{{$branchItem->name}}</h2>
+										</div>
+										<div class="job-list-option">
+											<ul class="list-unstyled">
+												<li><i class="fas fa-map-marker-alt pr-1"></i>{{$branchItem->address}}</li>
+											</ul>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+					<br>
+				@endforeach
+			</div>
+		</div>
+	</section>
 <!--=================================
 	Blog -->
 	<section class="space-ptb">
@@ -139,22 +206,6 @@
 			</div>
 			<div class="row">
 				@foreach($news as $newsItem)
-					<div class="col-lg-4 mb-lg-0 mb-4 news-home">
-						<div class="blog-post">
-							<div class="blog-post-image">
-								<a href="{{route('news-detail', ['slug' => $newsItem->slug, 'id' => $newsItem->id])}}">
-								<img class="img-fluid" src='{{asset("upload/og_images/$newsItem->image")}}' alt="{{$newsItem->title}}">
-								</a>
-							</div>
-							<div class="blog-post-content">
-								<div class="blog-post-details">
-									<div class="blog-post-title">
-									<h5><a href="{{route('news-detail', ['slug' => $newsItem->slug, 'id' => $newsItem->id])}}">{{$newsItem->title}}</a></h5>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
 					<div class="col-lg-4 mb-lg-0 mb-4 news-home">
 						<div class="blog-post">
 							<div class="blog-post-image">

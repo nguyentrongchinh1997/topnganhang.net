@@ -22,9 +22,9 @@
         <div class="form-group col-md-3 select-border">
             <select id="province" name="province" class="form-control basic-select">
                 <option value="" selected="selected">Chọn Tỉnh / Thành phố</option>
-                @foreach ($viewShare['provinceThebank'] as $provinceThebankItem)
-                    <option @if(!empty($province) && $province->id == $provinceThebankItem->id){{'selected'}}@endif value="{{$provinceThebankItem->id}}">
-                        {{$provinceThebankItem->name}}
+                @foreach ($viewShare['province'] as $provinceItem)
+                    <option @if(!empty($province) && $province->id == $provinceItem->id){{'selected'}}@endif value="{{$provinceItem->id}}">
+                        {{$provinceItem->name}}
                     </option>
                 @endforeach
             </select>

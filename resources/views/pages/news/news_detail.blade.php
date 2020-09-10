@@ -17,7 +17,10 @@
                             <span class="space">/</span>
                         </li>
                         <li class="breadcrumb-item active">
-                            <span>Tin tức</span></li>
+                            <a href="{{route('news')}}">
+                                <span>Tin tức</span>
+                            </a>
+                        </li>
                     </ol>
                 </div>
             </div>
@@ -39,6 +42,11 @@
                                 <div class="blog-post-comment">
                                     <a href="#"> <i class="fas fa-eye"></i>{{ $news->view }} lượt xem</a>
                                 </div>
+                                @if(auth()->check() && auth()->user()->level > 0)
+                                <div class="blog-post-comment">
+                                    <a target="_blank" href="{{ route('admin.news.edit', ['id' => $news->id]) }}"> Sửa tin</a>
+                                </div>
+                                @endif
                             </div>
                             <div class="blog-post-content">
                                 <div class="blog-post-description">
@@ -77,22 +85,26 @@
                                 <h2>Tin mới</h2>
                             </div>
                             @foreach ($latestNews as $newsItem)
-                                <div class="row d-flex mb-3 align-items-start">
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-12" style="margin-bottom: 20px">
-                                        <a href="{{ route('news-detail', ['slug' => $newsItem->slug, 'id' => $newsItem->id]) }}">
-                                            <img class="img-fluid" src='{{ asset("upload/thumbnails/$newsItem->image") }}' alt="{{$newsItem->title}}">
+                                <div class="news-item-sidebar row d-flex mb-3 align-items-start">
+                                    <div class="col-6 col-sm-6 col-md-6 col-lg-5">
+                                        <a
+                                            href="{{ route('news-detail', ['slug' => $newsItem->slug, 'id' => $newsItem->id]) }}">
+                                            <img class="img-fluid" src='{{ asset("upload/thumbnails/$newsItem->image") }}'
+                                                alt="{{ $newsItem->title }}">
                                         </a>
                                     </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-12">
-                                        <a href="{{ route('news-detail', ['slug' => $newsItem->slug, 'id' => $newsItem->id]) }}">{{ $newsItem->title }}</a>
+                                    <div class="col-6 col-sm-6 col-md-6 col-lg-7">
+                                        <p>
+                                            <a href="{{ route('news-detail', ['slug' => $newsItem->slug, 'id' => $newsItem->id]) }}">{{ $newsItem->title }}</a>
+                                        </p>
                                         <a class="d-block font-sm mt-1 text-light" href="#">
                                             {{ getWeekday($newsItem->created_at) }}
                                         </a>
                                     </div>
-                                </div>
+                                </div><hr>
                             @endforeach
                         </div>
-                        <div class="widget">
+                        {{-- <div class="widget">
                             <div class="widget-title">
                                 <h2>Tỷ giá ngân hàng</h2>
                             </div>
@@ -110,7 +122,7 @@
                                     </div>
                                 @endif
                             @endforeach
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

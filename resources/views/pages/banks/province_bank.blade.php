@@ -32,7 +32,7 @@
 					<div class="row" style="margin: 0px">
 						<div class="job-list border" style="width: 100%">
 							<div class="job-list-details">
-								<a href="{{route('bank-branch-detail', ['bank_name' => $bank->name_en, 'province' => $province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
+								<a href="{{route('bank-branch-detail', ['bank_name' => str_slug($bank->name_en), 'province' => $province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
 									<div class="job-list-info">
 										<div class="job-list-title">
 											<h2 title="{{$branchItem->name}} - Ngân hàng {{$bank->name_en}}" class="mb-0">{{$branchItem->name}}</h2>
@@ -55,19 +55,6 @@
 				<h3> Quận/Huyện</h3>
 				<br>
 				<div class="category-style-02">
-					{{-- <ul class="list-unstyled mb-0">
-						@foreach($province->district as $districtItem)
-							@if($districtItem->branch->where('bank_id', $bank->id)->count() > 0)
-								<li>
-									<a href="{{route('district-bank', ['bank_name' => $bank->slug, 'province' => $districtItem->province->slug, 'district' => $districtItem->slug])}}">
-										<h6 class="category-title">{{$districtItem->name}}</h6> <span class="category-count">
-											{{$districtItem->branch->where('bank_id', $bank->id)->count()}}
-										</span>
-									</a>
-								</li>
-							@endif
-						@endforeach
-					</ul> --}}
 					@foreach($province->district as $districtItem)
 						@if($districtItem->branch->where('bank_id', $bank->id)->count() > 0)
 						<div class="widget pb-3">

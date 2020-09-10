@@ -19,7 +19,7 @@
 <section class="space-ptb">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-9">
+			<div class="col-lg-8">
                 <h2>
                     Swift Code là gì? Tổng hợp mã Swift Code các ngân hàng tại Việt Nam
                 </h2>
@@ -278,7 +278,7 @@
                     Từ khóa: swift code là gì, swift code dùng để làm gì, swift code ngân hàng Vietinbank, swift code ngân hàng ACB, swift code ngân hàng Vietcombank, swift code ngân hàng MBBank, swift code ngân hàng Sacombank, swift code ngân hàng BIDV, swift code ngân hàng Agribank, swift code ngân hàng SeABank, swift code ngân hàng VPBank, tên tiếng Anh ngân hàng tại Việt Nam
                 </p>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 d
             </div>
         </div>

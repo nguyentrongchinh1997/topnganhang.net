@@ -61,7 +61,9 @@
                                     <img src='{{ asset("upload/thumbnails/$newsItem->image") }}' alt="">
                                 </td>
                                 <td>
-                                    {{ $newsItem->title }}
+                                <a target="_blank" href="{{route('news-detail', ['slug' => $newsItem->slug, 'id' => $newsItem->id])}}">
+                                        {{ $newsItem->title }}
+                                    </a>
                                 </td>
                                 <td>
                                     {{ $newsItem->view }}
@@ -73,8 +75,19 @@
                                     {{ date('d/m/Y', strtotime($newsItem->created_at)) }}
                                 </td>
                                 <td>
-                                    <a href="">Xóa</a> / <a href="{{route('admin.news.edit.form', ['id' => $newsItem->id])}}">Sửa</a>
+                                    <a onclick="return newsDelete()"
+                                        href="{{ route('admin.news.delete', ['id' => $newsItem->id]) }}">Xóa</a> / <a
+                                        href="{{ route('admin.news.edit.form', ['id' => $newsItem->id]) }}">Sửa</a>
                                 </td>
+                                <script>
+                                    function newsDelete() {
+                                        if (confirm('Bạn có chắc chắn muốn xóa tin này?')) {
+                                            return true;
+                                        }
+
+                                        return false;
+                                    }
+                                </script>
                             </tr>
                         @endforeach
                     </tbody>

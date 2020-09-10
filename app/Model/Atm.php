@@ -10,9 +10,14 @@ class Atm extends Model
 
     protected $fillable = [
     	'bank_id',
-    	'province_thebank_id',
-    	'district_thebank_id',
-    	'address'
+    	// 'province_thebank_id',
+		// 'district_thebank_id',
+		'name',
+		'slug',
+		'province_id',
+		'district_id',
+		'address',
+		'other_info',
 	];
 	
 	public function bank()
@@ -20,13 +25,13 @@ class Atm extends Model
 		return $this->belongsTo(Bank::class);
 	}
 
-	public function provinceTheBank()
+	public function province()
 	{
-		return $this->belongsTo(ProvinceTheBank::class);
+		return $this->belongsTo(Province::class);
 	}
 
-	public function districtTheBank()
+	public function district()
 	{
-		return $this->belongsTo(DistrictTheBank::class);
+		return $this->belongsTo(District::class);
 	}
 }

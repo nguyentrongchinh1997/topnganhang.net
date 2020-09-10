@@ -33,7 +33,7 @@
 <section class="space-ptb">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-9">
+			<div class="col-lg-8">
 				<h4>Điểm đặt cây ATM các ngân hàng Việt Nam</h4>
 				<br>
 				@foreach($banks as $bankItem)
@@ -61,8 +61,30 @@
 					</div>
 					<br>
 				@endforeach
+				<div class="row">
+					@foreach ($atms as $atmItem)
+						<div class="col-lg-6 atm-district">
+							<div class="job-list border" style="width: 100%">
+								<a href="{{ route('atm-detail', ['bank_name' => str_slug($atmItem->bank->name_en), 'address' => $atmItem->slug, 'id' => $atmItem->id]) }}">
+									<div class="job-list-details">
+										<div class="job-list-info">
+											<div class="job-list-option">
+												<ul class="list-unstyled">
+													<li><i class="fas fa-map-marker-alt pr-1"></i>
+														{{ $atmItem->address }}
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+						<br>
+					@endforeach
+				</div>
 			</div>
-			<div class="col-lg-3">
+			<div class="col-lg-4">
 				<div class="blog-sidebar">
 					@include('pages.includes.latest_news')
 				</div>

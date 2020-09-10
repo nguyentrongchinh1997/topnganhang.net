@@ -25,14 +25,14 @@
 <section class="space-ptb">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-9">
+			<div class="col-lg-8">
 				<h3>PGD {{$bank->name_en}} tại {{$district->name}} - {{$district->province->name}}</h3>
 				<br>
 				@foreach($branchs as $branchItem)
 				<div class="row" style="margin: 0px">
 					<div class="job-list border" style="width: 100%">
 						<div class="job-list-details">
-							<a href="{{route('bank-branch-detail', ['bank_name' => $bank->name_en, 'province' => $province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
+							<a href="{{route('bank-branch-detail', ['bank_name' => str_slug($bank->name_en), 'province' => $province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
 								<div class="job-list-info">
 									<div class="job-list-title">
 									<h2 title="{{$branchItem->name}} - Ngân hàng {{$bank->name_en}}" class="mb-0">{{$branchItem->name}}</h2>
@@ -51,7 +51,7 @@
 				@endforeach
 				{{$branchs->links()}}
 			</div>
-			<div class="col-lg-3">
+			<div class="col-lg-4">
 				<div class="blog-sidebar">
 					@include('pages.includes.latest_news')
 				</div>

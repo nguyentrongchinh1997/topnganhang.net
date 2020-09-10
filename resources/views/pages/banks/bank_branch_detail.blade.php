@@ -24,8 +24,7 @@
                         <span class="space">/</span>
                     </li>
                     <li class="breadcrumb-item active">
-                        <a href="{{route('district-bank', ['bank_name' => str_slug($branch->bank->name_en), 'province' => $branch->district->province->slug, 'district' => $branch->district->slug])}}">
-                        
+                        <a href="{{route('district-bank', ['bank_name' => str_slug($branch->bank->name_vi), 'province' => $branch->district->province->slug, 'district' => $branch->district->slug])}}">
                             {{$branch->district->name}}
                         </a>
                     </li>
@@ -45,7 +44,7 @@
 <section class="space-ptb">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-9">
+			<div class="col-lg-8">
                 <h2>
                     {{$branch->name}} - Ngân hàng {{$branch->bank->name_en}}
                 </h2>
@@ -64,31 +63,57 @@
                 </a>
                 <br><br>
                 <h2>
-                    Chi nhánh khác
-                </h2>
-                @foreach($otherBranch as $branchItem)
-                    <div class="row" style="margin: 0px">
-                        <div class="job-list border" style="width: 100%">
-                            <div class="job-list-details">
-                                <a href="{{route('bank-branch-detail', ['bank_name' => $branchItem->bank->name_en, 'province' => $branchItem->district->province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
-                                    <div class="job-list-info">
-                                        <div class="job-list-title">
-                                            <h5 class="mb-0">{{$branchItem->name}}</h5>
+                    Chi nhánh, PGD cùng quận / huyện
+                </h2><br>
+                <div class="row">
+                    @foreach($districtSameBranchs as $branchItem)
+                        <div class="col-lg-6" style="margin-bottom: 20px">
+                            <div class="job-list border" style="width: 100%">
+                                <div class="job-list-details">
+                                    <a href="{{route('bank-branch-detail', ['bank_name' => str_slug($branchItem->bank->name_en), 'province' => $branchItem->district->province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
+                                        <div class="job-list-info">
+                                            <div class="job-list-title">
+                                                <h5 class="mb-0">{{$branchItem->name}}</h5>
+                                            </div>
+                                            <div class="job-list-option">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fas fa-map-marker-alt pr-1"></i>{{$branchItem->address}}</li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="job-list-option">
-                                            <ul class="list-unstyled">
-                                                <li><i class="fas fa-map-marker-alt pr-1"></i>{{$branchItem->address}}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <br>
-                @endforeach
+                    @endforeach
+                </div>
+                <h2>
+                    Chi nhánh, PGD tại các tỉnh khác
+                </h2><br>
+                <div class="row">
+                    @foreach($otherBranchs as $branchItem)
+                        <div class="col-lg-6" style="margin-bottom: 20px">
+                            <div class="job-list border" style="width: 100%">
+                                <div class="job-list-details">
+                                    <a href="{{route('bank-branch-detail', ['bank_name' => str_slug($branchItem->bank->name_en), 'province' => $branchItem->district->province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
+                                        <div class="job-list-info">
+                                            <div class="job-list-title">
+                                                <h5 class="mb-0">{{$branchItem->name}}</h5>
+                                            </div>
+                                            <div class="job-list-option">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fas fa-map-marker-alt pr-1"></i>{{$branchItem->address}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 @include('pages.includes.latest_news')
             </div>
         </div>
