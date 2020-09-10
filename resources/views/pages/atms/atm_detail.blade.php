@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'Cây ATM ' . $atm->name . ' ngân hàng ' . $atm->bank->name_en . ' | ' . 'Cây ATM ' . $atm->name . ' tại ' . $atm->province->name)
+@section('title', 'Cây ATM ' . $atm->name . ' ngân hàng ' . $atm->bank->name_en . ' tại ' . $atm->province->name)
 
 @section('description', 'Cây ATM ' . $atm->name . ' ngân hàng ' . $atm->bank->name_en . ' tại ' . $atm->province->name . '. Địa chỉ: ' . $atm->address)
 
@@ -48,7 +48,7 @@
                     {!!$atm->other_info!!}
                 @else
                     <p>
-                        Đang cập nhật...
+                        <b>Địa chỉ: </b> {{$atm->address}}
                     </p>
                 @endif
                 <a target="_blank" href="http://maps.google.com/maps?q={{$atm->address}}&spn=,&hl=visssssss">
