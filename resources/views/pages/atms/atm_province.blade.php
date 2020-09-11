@@ -115,7 +115,7 @@
 	province_id = $('#province').val();
 	$.ajax({
 		type:'POST',
-		url:'{{route("district-the-bank")}}',
+		url:'{{route("district")}}',
 		data:{province_id:province_id},
 		success:function(data){
 			$('#district').html(data);
@@ -128,7 +128,7 @@
 			district_id = '';
 			$.ajax({
 	           	type:'POST',
-	           	url:'{{route("district-the-bank")}}',
+	           	url:'{{route("district")}}',
 	           	data:{province_id:province_id,district_id:district_id},
 	           	success:function(data){
 	            	$('#district').html(data);

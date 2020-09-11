@@ -9,7 +9,7 @@ $(function(){
         province_id = $(this).val();
         $.ajax({
                type:'POST',
-               url:'/bank/public/district',
+               url:'district',
                data:{province_id:province_id},
                success:function(data){
                 $('#district').html(data);

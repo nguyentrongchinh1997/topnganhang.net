@@ -161,10 +161,14 @@ class SiteController extends Controller
 
     public function search(Request $request)
     {
-        $input = $request->all();
-        $bank = Bank::findOrFail($input['bank']);
-        $province = Province::findOrFail($input['province']);
-        $district = District::findOrFail($input['district']);
+        $inputs = $request->all();
+        $bank = Bank::findOrFail($inputs['bank']);
+        
+        // if ($inputs['province'] == -1 || $inputs['district'] == -1) {
+        //     return back();
+        // }
+        $province = Province::findOrFail($inputs['province']);
+        $district = District::findOrFail($inputs['district']);
 
         return redirect()->route('district-bank', ['bank_name' => $bank->slug, 'province' => $province->slug, 'district' => $district->slug]);
     }

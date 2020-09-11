@@ -99,7 +99,7 @@
         district_id = "{{ $district->id }}";
         $.ajax({
             type: 'POST',
-            url: '{{route("district-the-bank")}}',
+            url: '{{route("district")}}',
             data: {
                 province_id: province_id,
                 district_id: district_id
@@ -115,7 +115,7 @@
                 district_id = '';
                 $.ajax({
                     type: 'POST',
-                    url: '{{route("district-the-bank")}}',
+                    url: '{{route("district")}}',
                     data: {
                         province_id: province_id,
                         district_id: district_id

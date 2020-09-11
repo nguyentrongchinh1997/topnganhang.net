@@ -50,7 +50,7 @@ Route::get('atm/{bankName}/{address}-{id}', 'SiteController@atmDetail')->where(a
 
 /*=============================================Quận/Huyện=================================*/
 Route::post('district', 'SiteController@getDistrict')->name('district');
-Route::post('district-the-bank', 'SiteController@getDistrictTheBank')->name('district-the-bank');
+//Route::post('district-the-bank', 'SiteController@getDistrictTheBank')->name('district-the-bank');
 /*=============================================End=======================================*/
 
 /*==============================================Tỷ giá===================================*/

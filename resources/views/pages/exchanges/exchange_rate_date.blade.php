@@ -7,7 +7,7 @@
     date('d/m/Y', strtotime($date)) .
     ' |
     Tỷ giá ngân hàng ' .
-    $bank->name_en,)
+    $bank->name_en)
 
 @section('description', 'Tra cứu tỷ giá ngân hàng ' . $bank->name_en . ' ngày ' . date('d/m/Y',
     strtotime($date)) . ', tỷ giá ngân hàng ' . $bank->name_en . ' ngày ' . date('d/m/Y',

@@ -96,3 +96,32 @@
         </div>
     </section>
 @endsection
+
+@section('js')
+<script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $(function() {
+            $('#province').change(function() {
+                province_id = $(this).val();
+                district_id = '';
+                $.ajax({
+                    type: 'POST',
+                    url: '{{route("district")}}',
+                    data: {
+                        province_id: province_id,
+                        district_id: district_id
+                    },
+                    success: function(data) {
+                        $('#district').html(data);
+                    }
+                });
+            })
+        });
+</script>
+@endsection
+
+    
