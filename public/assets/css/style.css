@@ -4,6 +4,10 @@
 .img-fluid{
   width: 100%;
 }
+.navbar{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
 body {
   /*font-family: "Roboto", sans-serif;*/
   font-family: Roboto, sans-serif;
@@ -2308,7 +2312,7 @@ button {
       -ms-flex: 0 0 180px;
           flex: 0 0 180px; }
   .navbar-brand img {
-    height: 28px; }
+    height: 23px; }
 
 .header .navbar-nav > li {
   display: -webkit-box;
@@ -2664,7 +2668,16 @@ button {
     left: 0;
     border-top: none !important;
     width: 100%; }
+@media (min-width: 992px) and (max-width: 1198px) {
+    .navbar-brand img{
+        height: 15px;
+    }
+}
 @media (max-width: 992px) {
+    .navbar-brand img{
+        width: 200px;
+        max-width: 200px;
+    }
   .news-home .blog-post-title h5{
     height: auto;
   }

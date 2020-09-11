@@ -44,7 +44,7 @@
                     <span></span>
                 </button>
                 <a class="navbar-brand" href="{{ route('index') }}">
-                    <img class="img-fluid" src="https://tygiahomnay.net/image/logo_ty_gia.jpg" alt="logo">
+                    <img class="img-fluid" src="{{asset('images/logo.jpg')}}" alt="logo">
                 </a>
                 <div class="navbar-collapse collapse justify-content-start">
                     <ul class="nav navbar-nav">
