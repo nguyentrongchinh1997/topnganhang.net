@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'Danh sách chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $district->name . ' - ' . $province->name . ' | Chi nhánh ngân hàng ' . $bank->name_en . ' tại ' . $district->name . ' - ' . $province->name)
+@section('title', 'Chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $district->name . ' - ' . $province->name . ' | Chi nhánh ngân hàng ' . $bank->name_en . ' tại ' . $district->name . ' - ' . $province->name)
 
 @section('description', 'Chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $district->name . ' - ' . $province->name . '. Tìm kiếm chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $district->name . ' - ' . $province->name)
 
@@ -63,28 +63,5 @@
 
 @section('js')
 <script src="{{asset('assets/js/get_district.js')}}"></script>
-<script>
-	function branchSearch()
-	{
-		bank = $('#bank').val();
-		province = $('#province').val();
-		district = $('#district').val();
-		
-		if (bank == -1) {
-			alert('Cần chọn ngân hàng');
-
-			return false;	
-		} else if (province == -1) {
-			alert('Cần chọn tỉnh, thành phố');
-
-			return false;
-		} else if (district == -1) {
-			alert('Cần chọn quận, huyện');
-
-			return false;
-		}
-
-		return true;
-	}
-</script>
+<script src="{{asset('assets/js/branch_search.js')}}"></script>
 @endsection

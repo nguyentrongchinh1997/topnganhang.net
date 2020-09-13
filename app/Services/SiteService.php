@@ -75,9 +75,11 @@ class SiteService
 	{
 		try {
 			$news = $this->newsModel->latest()->paginate(10);
+			$bank = $this->bankModel->all()->random(1);
 
 			return [
-				'news' => $news
+				'news' => $news,
+				'bank' => $bank[0],
 			];
 		} catch (\Throwable $th) {
 			return NULL;
@@ -340,7 +342,6 @@ class SiteService
 				'atms' => $atms
 			];
 		} catch (\Throwable $th) {
-			//dd($th->getMessage());
 			return NULL;
 		}
 	}

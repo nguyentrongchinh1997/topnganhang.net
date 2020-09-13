@@ -30,10 +30,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <h2>
-                        Tỷ giá ngân hàng {{ $bank->name_en }} - Ngân hàng {{ $bank->name_vi }}
+                    <h2 style="margin-bottom: 20px">
+                        Tỷ giá ngân hàng {{ $bank->name_en }}
                     </h2>
-                    <br>
                     <div class="row">
                         <div class="col-lg-6">
                             <p style="margin: 17px 0px 0px">
@@ -69,7 +68,7 @@
                             <div class="col-lg-6" style="margin-bottom: 20px">
                                 <div class="job-list border" style="width: 100%">
                                     <div class="job-list-details">
-                                        <a href="{{route('bank-branch-detail', ['bank_name' => $branchItem->bank->name_en, 'province' => $branchItem->district->province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
+                                        <a href="{{route('bank-branch-detail', ['bank_name' => str_slug($branchItem->bank->name_en), 'province' => $branchItem->district->province->slug, 'branch' => str_slug($branchItem->name), 'id' => $branchItem->id])}}">
                                             <div class="job-list-info">
                                                 <div class="job-list-title">
                                                     <h5 class="mb-0">{{$branchItem->name}}</h5>
@@ -89,6 +88,48 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="blog-sidebar">
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h2>Xem thêm</h2>
+                            </div>
+                            <div class="social">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="{{route('exchange-rate', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Xem tỷ giá</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('interest-rate', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Xem lãi suất</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('bank', ['bank' => str_slug($bank->slug)])}}"> » Xem chi nhánh</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('bank-atm', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Tra cứu ATM</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('news-detail', ['slug' => $viewShare['swift_code']->slug, 'id' => $viewShare['swift_code']->id]) }}"> » Mã Swift Code</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('bank-intro', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Giới thiệu</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h2>PGD ngân hàng</h2>
+                            </div>
+                            <div class="social">
+                                <ul class="list-unstyled">
+                                    @foreach ($viewShare['bank'] as $bankItem)
+                                        <li>
+                                            <a title="Chi nhánh ngân hàng {{ $bankItem->name_en }}"
+                                                href="{{ route('bank', ['slug' => $bankItem->slug]) }}"> » {{$bankItem->name_en}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                         @include('pages.includes.latest_news')
                     </div>
                 </div>

@@ -1,8 +1,8 @@
 @extends('layouts.index')
 
-@section('title', 'Danh sách chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $province->name . ' | Chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $province->name)
+@section('title', 'Chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $province->name)
 
-@section('description', 'Chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $province->name . '. Tìm kiếm chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $province->name)
+@section('description', 'Chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $province->name . '. Tìm kiếm chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $province->name . '. Tổng hợp ' . 'Chi nhánh, PGD ngân hàng ' . $bank->name_en . ' tại ' . $province->name)
 
 @section('content')
 <section>
@@ -25,9 +25,8 @@
 <section class="space-ptb">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-9">
-				<h3 title="Phòng giao dịch ngân hàng Vietcombank ở Hà Nội">PGD {{$bank->name_en}} tại {{$province->name}}</h3>
-				<br>
+			<div class="col-lg-8">
+				<h2 style="margin-bottom: 20px" title="Phòng giao dịch ngân hàng Vietcombank ở Hà Nội">PGD {{$bank->name_en}} tại {{$province->name}}</h2>
 				@foreach($branchs as $branchItem)
 					<div class="row" style="margin: 0px">
 						<div class="job-list border" style="width: 100%">
@@ -51,8 +50,26 @@
 				@endforeach
 				{{$branchs->links()}}
 			</div>
-			<div class="col-lg-3">
-				<h3> Quận/Huyện</h3>
+			<div class="col-lg-4 blog-sidebar">
+				<div class="widget">
+					<div class="widget-title">
+						<h2>PGD quận / huyện</h2>
+					</div>
+					<div class="social">
+						<ul class="list-unstyled">
+							@foreach($province->district as $districtItem)
+								@if($districtItem->branch->where('bank_id', $bank->id)->count() > 0)
+									<li>
+										<a href="{{route('district-bank', ['bank_name' => $bank->slug, 'province' => $districtItem->province->slug, 'district' => $districtItem->slug])}}"> » {{$districtItem->name}}</a>
+										<a class="follow ml-auto" href="#">{{$districtItem->branch->where('bank_id', $bank->id)->count()}}</a>
+									</li>
+								@endif
+							@endforeach
+						</ul>
+					</div>
+				</div>
+				@include('pages.includes.latest_news')
+				{{-- <h3> Quận/Huyện</h3>
 				<br>
 				<div class="category-style-02">
 					@foreach($province->district as $districtItem)
@@ -71,7 +88,7 @@
 						</div>
 						@endif
 					@endforeach
-				</div>
+				</div> --}}
 			</div>
 		</div>
 	</div>
@@ -79,5 +96,6 @@
 @stop
 
 @section('js')
+<script src="{{asset('assets/js/branch_search.js')}}"></script>
 <script src="{{asset('assets/js/get_district.js')}}"></script>
 @endsection

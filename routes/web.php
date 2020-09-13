@@ -39,7 +39,7 @@ Route::get('tim-atm/{bank}-{district}-{province}-{bankId}-{provinceId}-{district
 
 Route::get('tim-atm/{bank}-{province}-{bankId}-{provinceId}', 'SiteController@provinceAtm')->where(array('bank' => '[a-z0-9\-]+', 'province' => '[a-z0-9\-]+', 'bankId' => '[0-9]+', 'provinceId' => '[0-9]+'))->name('province-atm');
 
-Route::get('tim-atm/{bank}-{id}', 'SiteController@bankAtm')->name('bank-atm');
+Route::get('tim-atm/{bank}-{id}', 'SiteController@bankAtm')->where(array('bank' => '[a-z0-9\-]+', 'id' => '[0-9]+'))->name('bank-atm');
 
 Route::post('search-atm', 'SiteController@atmSearch')->name('atm-search');
 
@@ -69,10 +69,10 @@ Route::post('get-exchange', 'SiteController@getExchange')->name('get-exchange');
 /*===============================================End=====================================*/
 
 /* =================================================clone================================*/
-Route::get('clone-atm', 'CloneController@atm');
-Route::get('tool-the-bank', 'CloneController@theBank');
-Route::get('clone', 'CloneController@getBranch');
-Route::get('clone-bank', 'CloneController@getBank');
+//Route::get('clone-atm', 'CloneController@atm'); lấy ATM trang the bank
+//Route::get('tool-the-bank', 'CloneController@theBank') lấy ATM trang thebank;
+//Route::get('clone', 'CloneController@getBranch');
+Route::get('clone-branch', 'CloneController@getBranch');
 Route::get('get-atm', 'CloneController@getAtm');
 Route::get('ty-gia', 'CloneController@tyGia');
 Route::get('update', 'CloneController@updateDb');

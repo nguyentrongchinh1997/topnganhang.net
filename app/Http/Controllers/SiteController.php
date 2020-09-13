@@ -163,10 +163,6 @@ class SiteController extends Controller
     {
         $inputs = $request->all();
         $bank = Bank::findOrFail($inputs['bank']);
-        
-        // if ($inputs['province'] == -1 || $inputs['district'] == -1) {
-        //     return back();
-        // }
         $province = Province::findOrFail($inputs['province']);
         $district = District::findOrFail($inputs['district']);
 

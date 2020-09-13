@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'Danh sách điểm đặt cây ATM ngân hàng ' . $bank->name_en . ' tại các tỉnh thành | Điểm đặt ngân hàng '
+@section('title', 'Điểm đặt cây ATM ngân hàng ' . $bank->name_en . ' tại các tỉnh thành | Điểm đặt ATM ngân hàng '
     . $bank->name_en)
 
 @section('description', 'Tìm kiếm điểm đặt ATM ngân hàng ' . $bank->name_en . ' tại các tỉnh, thành phố. Tìm kiếm điểm
@@ -37,10 +37,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <h3 title="Cây ATM {{ $bank->name_en }} các tỉnh thành">
+                    <h2 style="margin-bottom: 20px" title="Cây ATM {{ $bank->name_en }} các tỉnh thành">
                         Cây ATM {{ $bank->name_en }} các tỉnh thành
-                    </h3>
-                    <br>
+                    </h2>
                     <div class="row">
                         @foreach ($provinces as $provinceItem)
                             <div class="col-lg-6">
@@ -89,6 +88,50 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="blog-sidebar">
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h2>Xem thêm</h2>
+                            </div>
+                            <div class="social">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="{{route('exchange-rate', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Xem tỷ giá</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('interest-rate', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Xem lãi suất</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('bank', ['bank' => str_slug($bank->slug)])}}"> » Xem chi nhánh</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('bank-atm', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Tra cứu ATM</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('news-detail', ['slug' => $viewShare['swift_code']->slug, 'id' => $viewShare['swift_code']->id]) }}"> » Mã Swift Code</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('bank-intro', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Giới thiệu</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h2>Tỷ giá ngân hàng</h2>
+                            </div>
+                            <div class="social">
+                                <ul class="list-unstyled">
+                                    @foreach ($viewShare['bank'] as $bankItem)
+                                        @if (!in_array($bankItem->id, [7, 10]))
+                                            <li>
+                                                <a title="Tỷ giá ngân hàng {{ $bankItem->name_en }}"
+                                                    href="{{ route('exchange-rate', ['slug' => str_slug($bankItem->name_en), 'id' => $bankItem->id]) }}"> » {{$bankItem->name_en}}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                         @include('pages.includes.latest_news')
                     </div>
                 </div>

@@ -33,7 +33,7 @@
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12">
-                            <h2 class="text-left">Chi nhánh ngân hàng {{ $bank->name_en }} tại các tỉnh thành</h2><br>
+                            <h2 style="margin-bottom: 20px" class="text-left">Chi nhánh ngân hàng {{ $bank->name_en }} tại các tỉnh thành</h2>
                         </div>
                     </div>
                     @foreach ($provinces as $provinceItem)
@@ -86,9 +86,27 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="blog-sidebar">
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h2>Tỷ giá ngân hàng</h2>
+                            </div>
+                            <div class="social">
+                                <ul class="list-unstyled">
+                                    @foreach ($viewShare['bank'] as $bankItem)
+                                        @if (!in_array($bankItem->id, [7, 10]))
+                                            <li>
+                                                <a title="Tỷ giá ngân hàng {{ $bankItem->name_en }}"
+                                                    href="{{ route('exchange-rate', ['slug' => str_slug($bankItem->name_en), 'id' => $bankItem->id]) }}"> » {{$bankItem->name_en}}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                         @include('pages.includes.latest_news')
+                        
                     </div>
-                    <h4>
+                    {{-- <h4>
                         Tỷ giá ngân hàng
                     </h4><br>
                     @foreach ($viewShare['bank'] as $bankItem)
@@ -102,7 +120,7 @@
                                 </div>
                             </a>
                         </div>
-                    @endforeach
+                    @endforeach --}}
                 </div>
             </div>
         </div>
@@ -119,15 +137,11 @@
 			district = $('#district').val();
 			
 			if (bank == -1) {
-				alert('Cần chọn ngân hàng');
+				alert('Bạn muốn tìm chi nhánh ngân hàng nào?');
 
 				return false;	
 			} else if (province == -1) {
-				alert('Cần chọn tỉnh, thành phố');
-
-				return false;
-			} else if (district == -1) {
-				alert('Cần chọn quận, huyện');
+				alert('Bạn muốn tìm chi nhánh của tỉnh / thành phố nào?');
 
 				return false;
 			}

@@ -111,5 +111,51 @@ return [
 			'the_bank' => 'seabank',
 			'the_bank_id' => 17
 		]
-	]
+	],
+	'link' => [
+		1 => [
+				'domain' => 'https://vietcombank.ngan-hang.com/',
+				'bank_id' => 1,
+			],
+		2 => [
+			'domain' => 'https://vietinbank.ngan-hang.com/',
+			'bank_id' => 2,
+		],
+		3 => [
+			'domain' => 'https://acb.ngan-hang.com/',
+			'bank_id' => 3,
+		],
+		4 => [
+			'domain' => 'https://bidv.ngan-hang.com/',
+			'bank_id' => 4,
+		],
+		5 => [
+			'domain' => 'https://agribank.ngan-hang.com/',
+			'bank_id' => 5,
+		],
+		6 => [
+			'domain' => 'https://mbbank.ngan-hang.com/',
+			'bank_id' => 6,
+		],
+		7 => [
+			'domain' => 'https://seabank.ngan-hang.com/',
+			'bank_id' => 7,
+		],
+		8 => [
+			'domain' => 'https://maritime.ngan-hang.com/',
+			'bank_id' => 8,
+		],
+		9 => [
+			'domain' => 'https://techcombank.ngan-hang.com/',
+			'bank_id' => 9,
+		],
+		10 => [
+			'domain' => 'https://vpbank.ngan-hang.com/',
+			'bank_id' => 10,
+		],
+		11 => [
+			'domain' => 'https://sacombank.ngan-hang.com/',
+			'bank_id' => 11,
+		],
+ 	]
 ];

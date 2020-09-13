@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'Danh sách điểm đặt cây ATM ngân hàng ' . $bank->name_en . ' tại ' . $province->name . ' | Điểm đặt ngân hàng ' . $bank->name_en . ' tại ' . $province->name)
+@section('title', 'Điểm đặt cây ATM ngân hàng ' . $bank->name_en . ' tại ' . $province->name)
 
 @section('description', 'Tổng hợp điểm đặt ATM ngân hàng ' . $bank->name_en . ' tại ' . $province->name . '. Tìm kiếm điểm đặt ATM nhanh nhất, công cụ tìm kiếm điểm đặt ATM.')
 
@@ -37,7 +37,7 @@
 		<div class="row">
 			<div class="col-lg-8">
 				<h3>
-                    Cây ATM {{$bank->name_en}} tại {{$province->name}}
+                    Cây ATM {{$bank->name_en}} tại {{$province->name}} chinhs
 				</h3><br>
 				<div class="row">
 					@foreach($atms as $atmItem)

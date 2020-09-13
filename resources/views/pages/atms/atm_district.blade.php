@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'Danh sách cây ATM tại ' . $district->name . '-' . $province->name . ' | Điểm đặt cây ATM tại ' .
+@section('title', 'Cây ATM tại ' . $district->name . '-' . $province->name . ' | Điểm đặt cây ATM tại ' .
     $district->name . ' - ' . $province->name)
 
 @section('description', 'Tổng hợp điểm đặt ATM tại ' . $district->name . '-' . $province->name . ', danh sách cây rút

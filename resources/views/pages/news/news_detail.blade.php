@@ -82,6 +82,21 @@
                     <div class="blog-sidebar">
                         <div class="widget">
                             <div class="widget-title">
+                                <h2>PGD ngân hàng</h2>
+                            </div>
+                            <div class="social">
+                                <ul class="list-unstyled">
+                                    @foreach ($viewShare['bank'] as $bankItem)
+                                        <li>
+                                            <a title="Chi nhánh ngân hàng {{ $bankItem->name_en }}"
+                                                href="{{ route('bank', ['slug' => $bankItem->slug]) }}"> » {{$bankItem->name_en}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="widget">
+                            <div class="widget-title">
                                 <h2>Tin mới</h2>
                             </div>
                             @foreach ($latestNews as $newsItem)
@@ -104,6 +119,7 @@
                                 </div><hr>
                             @endforeach
                         </div>
+                        
                         {{-- <div class="widget">
                             <div class="widget-title">
                                 <h2>Tỷ giá ngân hàng</h2>

@@ -76,58 +76,45 @@
                 <div class="col-lg-4 mt-4 mt-lg-0">
                     <div class="blog-sidebar">
                         <div class="widget">
-                            @foreach ($viewShare['bank'] as $bankItem)
-                                <div class="pb-3">
-                                    <a title="Chi nhánh ngân hàng {{ $bankItem->name_en }}"
-                                        href="{{ route('bank', ['slug' => str_slug($bankItem->name_vi)]) }}">
-                                        <div class="docs-content">
-                                            <div class="docs-text">
-                                                » CN ngân hàng {{ $bankItem->name_en }}
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            @endforeach
+                            <div class="widget-title">
+                                <h2>PGD ngân hàng</h2>
+                            </div>
+                            <div class="social">
+                                <ul class="list-unstyled">
+                                    @foreach ($viewShare['bank'] as $bankItem)
+                                        <li>
+                                            <a title="Chi nhánh ngân hàng {{ $bankItem->name_en }}"
+                                                href="{{ route('bank', ['slug' => $bankItem->slug]) }}"> » {{$bankItem->name_en}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </div>
                         <div class="widget">
                             <div class="widget-title">
-                                <h5>Chuyên mục khác</h5>
+                                <h2>Ngân hàng {{$bank->name_en}}</h2>
                             </div>
-                            <div class="pb-3">
-                                <a>
-                                    <div class="docs-content">
-                                        <div class="docs-text">
-                                            » Lãi suất ngân hàng
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="pb-3">
-                                <a>
-                                    <div class="docs-content">
-                                        <div class="docs-text">
-                                            » Lãi suất ngân hàng
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="pb-3">
-                                <a>
-                                    <div class="docs-content">
-                                        <div class="docs-text">
-                                            » Lãi suất ngân hàng
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="pb-3">
-                                <a>
-                                    <div class="docs-content">
-                                        <div class="docs-text">
-                                            » Lãi suất ngân hàng
-                                        </div>
-                                    </div>
-                                </a>
+                            <div class="social">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="{{route('exchange-rate', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Xem tỷ giá</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('interest-rate', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Xem lãi suất</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('bank', ['bank' => str_slug($bank->slug)])}}"> » Xem chi nhánh</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('bank-atm', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Tra cứu ATM</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('news-detail', ['slug' => $viewShare['swift_code']->slug, 'id' => $viewShare['swift_code']->id]) }}"> » Mã Swift Code</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('bank-intro', ['bank' => str_slug($bank->name_en), 'id' => $bank->id])}}"> » Giới thiệu</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
