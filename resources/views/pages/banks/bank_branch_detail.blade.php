@@ -72,8 +72,7 @@
                                 href="http://maps.google.com/maps?q={{ $branch->address }}&spn=,&hl=visssssss">
                                 <button class=" btn btn-primary"><i class="fas fa-map-marker-alt"></i> Xem bản đồ</button>
                             </a>
-                            <a target="_blank"
-                                href="http://maps.google.com/maps?q={{ $branch->address }}&spn=,&hl=visssssss">
+                            <a target="_blank" href="{{$branch->bank->web}}">
                                 <button class="btn btn-info mb-2" style='margin-bottom: 0px !important'><i class="fas fa-globe-asia"></i> Website</button>
                             </a>
                         </center>
