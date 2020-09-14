@@ -1,8 +1,8 @@
 @extends('layouts.index')
 
-@section('title', 'Tổng hợp thông tin ngân hàng trên toàn quốc | Tim kiếm chi nhánh ngân hàng')
+@section('title', 'Thông tin ngân hàng: Chi nhánh, Tỷ giá, Lãi suất, Vị trí ATM')
 
-@section('description', 'Thông tin tất cả ngân hàng tại Việt Nam. Công cụ tìm kiếm chi nhánh ngân hàng, tìm kiếm điểm đặt cây ATM, xem tỷ giá ngân hàng, tin tức ngân hàng, tra cứu lãi suất ngân hàng')
+@section('description', 'Tra cứu thông tin tất cả các ngân hàng tại Việt Nam: chi nhánh ngân hàng, tỷ giá đô la, lãi suất ngân hàng, vị trí đặt ATM')
 
 @section('content')
 <!--=================================
