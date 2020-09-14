@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'Chi nhánh, PGD ngân hàng ' . $branch->bank->name_en . ' ' . $branch->district->name . ', ' .
+@section('title', 'Chi nhánh ngân hàng ' . $branch->bank->name_en . ' ' . $branch->district->name . ', ' .
     $branch->district->province->name . ' | ' . $branch->name . ' ngân hàng ' . $branch->bank->name_en . ' ' .
     $branch->district->name . ', ' . $branch->district->province->name)
 
@@ -79,7 +79,7 @@
                     </div>
                     <br><br>
                     <h2>
-                        Chi nhánh, PGD cùng quận / huyện
+                        Chi nhánh cùng quận / huyện ngân hàng {{$branch->bank->name_en}}
                     </h2><br>
                     <div class="row">
                         @foreach ($districtSameBranchs as $branchItem)
@@ -107,7 +107,7 @@
                         @endforeach
                     </div>
                     <h2>
-                        Chi nhánh, PGD tại các tỉnh khác
+                        Chi nhánh ngân hàng {{$branch->bank->name_en}} tại các tỉnh khác
                     </h2><br>
                     <div class="row">
                         @foreach ($otherBranchs as $branchItem)
@@ -134,35 +134,12 @@
                             </div>
                         @endforeach
                     </div>
+                    <p>
+                        {!!$string!!}
+                    </p>
                 </div>
                 <div class="col-lg-4 blog-sidebar">
-                    <div class="widget">
-                        <div class="widget-title">
-                            <h2>Xem thêm</h2>
-                        </div>
-                        <div class="social">
-                            <ul class="list-unstyled">
-                                <li>
-                                    <a href="{{route('exchange-rate', ['bank' => str_slug($branch->bank->name_en), 'id' => $branch->bank->id])}}"> » Xem tỷ giá</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('interest-rate', ['bank' => str_slug($branch->bank->name_en), 'id' => $branch->bank->id])}}"> » Xem lãi suất</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('bank', ['bank' => str_slug($branch->bank->slug)])}}"> » Xem chi nhánh</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('bank-atm', ['bank' => str_slug($branch->bank->name_en), 'id' => $branch->bank->id])}}"> » Tra cứu ATM</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('news-detail', ['slug' => $viewShare['swift_code']->slug, 'id' => $viewShare['swift_code']->id]) }}"> » Mã Swift Code</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('bank-intro', ['bank' => str_slug($branch->bank->name_en), 'id' => $branch->bank->id])}}"> » Giới thiệu</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    @include('pages.includes.bank_tool')
                     @include('pages.includes.latest_news')
                 </div>
             </div>

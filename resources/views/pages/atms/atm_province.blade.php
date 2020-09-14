@@ -37,7 +37,7 @@
 		<div class="row">
 			<div class="col-lg-8">
 				<h3>
-                    Cây ATM {{$bank->name_en}} tại {{$province->name}} chinhs
+                    Cây ATM {{$bank->name_en}} tại {{$province->name}}
 				</h3><br>
 				<div class="row">
 					@foreach($atms as $atmItem)
@@ -86,6 +86,8 @@
             </div>
             <div class="col-lg-4">
 				<div class="blog-sidebar">
+					@include('pages.includes.bank_tool')
+					@include('pages.includes.bank_sidebar')
 					@include('pages.includes.latest_news')
 				</div>
             </div>

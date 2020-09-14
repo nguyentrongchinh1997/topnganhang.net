@@ -86,25 +86,7 @@
 			</div>
 			<div class="col-lg-4">
 				<div class="blog-sidebar">
-					<h4>
-						Lãi suất ngân hàng
-					</h4><br>
-					<div class="widget">
-						<div class="social">
-							<ul class="list-unstyled">
-								@foreach($viewShare['bank'] as $bankItem)
-									@if(!in_array($bankItem->id, [3, 8, 6]))
-										<li>
-											<a href="{{route('interest-rate', ['slug' => str_slug($bankItem->name_en), 'id' => $bankItem->id])}}">
-												» {{$bankItem->name_en}}
-											</a>
-										</li>
-									@endif
-									
-								@endforeach
-							</ul>
-						</div>
-					</div>
+					@include('pages.includes.bank_sidebar')
 					@include('pages.includes.latest_news')
 				</div>
 			</div>

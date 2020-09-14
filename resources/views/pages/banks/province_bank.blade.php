@@ -26,7 +26,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8">
-				<h2 style="margin-bottom: 20px" title="Phòng giao dịch ngân hàng Vietcombank ở Hà Nội">PGD {{$bank->name_en}} tại {{$province->name}}</h2>
+				<h2 style="margin-bottom: 20px" title="Phòng giao dịch ngân hàng Vietcombank ở Hà Nội">Chi nhánh {{$bank->name_en}} tại {{$province->name}}</h2>
 				@foreach($branchs as $branchItem)
 					<div class="row" style="margin: 0px">
 						<div class="job-list border" style="width: 100%">
@@ -49,11 +49,14 @@
 					<br>
 				@endforeach
 				{{$branchs->links()}}
+				<p>
+					{!!$string!!}
+				</p>
 			</div>
 			<div class="col-lg-4 blog-sidebar">
 				<div class="widget">
 					<div class="widget-title">
-						<h2>PGD quận / huyện</h2>
+						<h2 title="Chi nhánh tại quận, huyện ngân hàng {{$bank->name_en}} tại {{$province->name}}">CN quận / huyện</h2>
 					</div>
 					<div class="social">
 						<ul class="list-unstyled">

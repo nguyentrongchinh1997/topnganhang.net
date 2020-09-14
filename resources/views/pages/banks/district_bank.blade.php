@@ -26,8 +26,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8">
-				<h3>PGD {{$bank->name_en}} tại {{$district->name}} - {{$district->province->name}}</h3>
-				<br>
+				<h2 style="margin-bottom: 20px">PGD {{$bank->name_en}} tại {{$district->name}} - {{$district->province->name}}</h2>
 				@foreach($branchs as $branchItem)
 				<div class="row" style="margin: 0px">
 					<div class="job-list border" style="width: 100%">
@@ -50,6 +49,9 @@
 				<br>
 				@endforeach
 				{{$branchs->links()}}
+				<p>
+					{!!$string!!}
+				</p>
 			</div>
 			<div class="col-lg-4">
 				<div class="blog-sidebar">

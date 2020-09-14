@@ -22,7 +22,7 @@ class SiteController extends Controller
     public function __construct(SiteService $siteService)
     {
         $this->siteService = $siteService;
-        $cache = Cache::remember('fixed', 30, function() {
+        $cache = Cache::remember('fixed', 60, function() {
             return [
                     'bank' => Bank::all(),
                     'province' => Province::all(),

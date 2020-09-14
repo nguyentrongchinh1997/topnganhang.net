@@ -70,6 +70,8 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="blog-sidebar">
+                        @include('pages.includes.bank_tool')
+                        @include('pages.includes.bank_sidebar')
                         @include('pages.includes.latest_news')
                     </div>
                 </div>
