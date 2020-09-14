@@ -48,6 +48,16 @@ class CloneController extends Controller
                                 text-align: right;
                             }
                         </style>';
+    protected $style4 = '<style>
+                            .exchange-rate table tr td:nth-child(2) {
+                                text-align: right;
+                                color: #007fff;
+                            }
+                            .exchange-rate table tr td:nth-child(3) {
+                                text-align: right;
+                                color: red;
+                            }
+                        </style>';
                         
     public function tyGia()
     {
@@ -55,11 +65,18 @@ class CloneController extends Controller
         $this->sacombank();
         $this->techcombank();
         $this->agribank();
-        $this->bidv('https://tygia.vn/ty-gia/bidv/ngay-', 'bidv'); //lấy tygia.vn
-        $this->vietcombank('https://tygia.vn/ty-gia/vietcombank/ngay-', 'vietcombank');
-        $this->mbBank('https://tygia.vn/ty-gia/mbbank/ngay-', 'mbBank'); // lấy ở tygia.vn
-        $this->acb('https://tygia.vn/ty-gia/acb/ngay-', 'acb'); // tygia.vn
-        $this->maritimeBank('https://thebank.vn/cong-cu/tinh-ty-gia-ngoai-te/ty-gia-maritimebank.html', $bankId = 8);
+        $this->mbbank('https://thebank.vn/cong-cu/tinh-ty-gia-ngoai-te/ty-gia-mbbank.html', $bankId = 6);
+        $this->getExchangePageNganHang('https://bidv.ngan-hang.com/', 4); // bidv
+        $this->getExchangePageNganHang('https://acb.ngan-hang.com/', 3); // acb
+        $this->getExchangePageNganHang('https://maritime.ngan-hang.com/', 8); //maritime
+        $this->getExchangePageNganHang('https://vpbank.ngan-hang.com/', 10); //vpbank
+        $this->getExchangePageNganHang('https://seabank.ngan-hang.com/', 7); //seabank
+        $this->getExchangePageNganHang('https://vietcombank.ngan-hang.com/', 1); //vietcombank
+        //$this->bidv('https://tygia.vn/ty-gia/bidv/ngay-', 'bidv'); //lấy tygia.vn
+        //$this->mbBank('https://tygia.vn/ty-gia/mbbank/ngay-', 'mbBank'); // lấy ở tygia.vn
+        //$this->acb('https://tygia.vn/ty-gia/acb/ngay-', 'acb'); // tygia.vn
+        //$this->vietcombank('https://tygia.vn/ty-gia/vietcombank/ngay-', 'vietcombank');
+        
     }
 
     public function acb($link, $name)
@@ -69,19 +86,61 @@ class CloneController extends Controller
         $this->getExchangeTyGia($bankId = 3, $date, $link, $name);
     }
 
-    public function bidv($link, $name)
+    public function bidv($link)
     {
-        $date = date('d-m-Y');
-        $link = $link . $date;
-        $this->getExchangeTyGia($bankId = 4, $date, $link, $name);
+        /**
+         * Lấy tỷ giá tại trang tygia.vn
+         */
+        // $date = date('d-m-Y');
+        // $link = $link . $date;
+        // $this->getExchangeTyGia($bankId = 4, $date, $link, $name);        
+    }
+
+    public function getExchangePageNganHang($link, $bankId)
+    {
+        try {
+            $html = file_get_html_custom($link);
+            
+            if (!empty($html->find('table.tb-bordered', 0))) {
+                $content = $html->find('table.tb-bordered', 0)->outertext;
+
+                foreach ($html->find('table.tb-bordered a') as $a) {
+                    $href = $a->href;
+                    $content = str_replace($href, '', $content);
+                }
+            } else if (!empty($html->find('table.table-bordered', 0))) {
+                $content = $html->find('table.table-bordered', 0)->outertext;
+
+                foreach ($html->find('table.table-bordered a') as $a) {
+                    $href = $a->href;
+                    $content = str_replace($href, '', $content);
+                }
+            }
+            $date = date('Y-m-d');
+
+            ExchangeRate::updateOrCreate(
+                [
+                    'date' => $date,
+                    'bank_id' => $bankId
+                ],
+                [
+                    'content' => $content . $this->style4
+                ]
+            );
+
+            echo 'Thêm thành công ' . $link . '<hr>';
+        } catch (\Throwable $th) {
+            echo $th->getMessage() . ':' . $link . '<hr>';
+        }
+        
     }
     
-    public function mbBank($link, $name)
-    {
-        $date = date('d-m-Y');
-        $link = $link . $date;
-        $this->getExchangeTyGia($bankId = 6, $date, $link, $name);
-    }
+    // public function mbBank($link, $name)
+    // {
+    //     $date = date('d-m-Y');
+    //     $link = $link . $date;
+    //     $this->getExchangeTyGia($bankId = 6, $date, $link, $name);
+    // }
 
     public function vietcombank($link, $name)
     {
@@ -108,9 +167,9 @@ class CloneController extends Controller
         }
     }
 
-    public function maritimeBank($link, $bankId)
+    public function mbbank($link, $bankId)
     {
-        $this->getExchangeTheBank($link, $bankId, date('Y-m-d'), $name ='Maritime Bank');
+        $this->getExchangeTheBank($link, $bankId, date('Y-m-d'), $name ='MBBank');
     }
 
     // public function vietcombank($link, $bankId = 1)

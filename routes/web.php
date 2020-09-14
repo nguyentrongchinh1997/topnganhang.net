@@ -74,7 +74,7 @@ Route::post('get-exchange', 'SiteController@getExchange')->name('get-exchange');
 //Route::get('clone', 'CloneController@getBranch');
 Route::get('clone-branch', 'CloneController@getBranch');
 Route::get('get-atm', 'CloneController@getAtm');
-Route::get('ty-gia', 'CloneController@tyGia');
+Route::get('get-exchange', 'CloneController@tyGia');
 Route::get('update', 'CloneController@updateDb');
 Route::get('msb', 'CloneController@msm');
 /* ====================================================end==============================*/

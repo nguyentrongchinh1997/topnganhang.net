@@ -62,7 +62,11 @@
                     <div class="form-group">
                         <label>Lãi suất</label>
                         <textarea required="required" name="interest" id="content-ckeditor1"
-                            class="form-control ckeditor">{!! $bank->interestRate->content !!}</textarea>
+                            class="form-control ckeditor">
+                            @if(!empty($bank->interestRate->content))
+                                {!!$bank->interestRate->content!!}
+                            @endif
+                        </textarea>
                     </div>
                     <div class="form-group">
                         <center>
