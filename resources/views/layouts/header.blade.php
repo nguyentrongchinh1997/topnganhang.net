@@ -27,6 +27,9 @@
 
     <!-- Template Style -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
+    <link rel="icon" type="image/png" href="{{asset('images/16.png')}}" sizes="16x16">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('images/32.png')}}">
+    <link rel="icon" type="image/png" href="{{asset('images/180.png')}}" sizes="32x32">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head>
 

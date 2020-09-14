@@ -28,10 +28,13 @@
     <section class="space-ptb">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-8 bank-intro">
                     <h2>
                         Ngân hàng {{ $bank->name_en }} - Ngân hàng {{ $bank->name_vi }}
                     </h2>
+                    <p>
+                        {!!$bank->description!!}
+                    </p>
                     {!! $bank->content !!}
                     <h2>
                         Xem thêm
