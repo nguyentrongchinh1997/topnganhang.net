@@ -51,6 +51,11 @@
                     <div class="exchange-rate">
                         {!! $exchangeRate->content !!}
                     </div>
+                    <style>
+                        .exchange-rate table a{
+                            color: #333;
+                        }
+                    </style>
                     <p>
                         Tỷ giá ngân hàng {{ $bank->name_en }}, tỷ giá hôm này, tỷ giá ngày
                         {{ date('d/m/Y', strtotime($exchangeRate->date)) }}, tỷ giá đô la, tỷ giá yên nhật, tỷ giá trung
@@ -59,7 +64,9 @@
                     <h3>
                         Giới thiệu
                     </h3>
-                    {!!$exchangeRate->bank->content!!}
+                    <div class="bank-intro">
+                        {!!$exchangeRate->bank->content!!}
+                    </div>
                     <h2>
                         Chi nhánh, PGD ngân hàng {{$bank->name_en}}
                     </h2><br>

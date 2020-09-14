@@ -63,7 +63,7 @@ class CloneController extends Controller
     {
         $this->vietinbank();
         $this->sacombank();
-        $this->techcombank();
+        //$this->techcombank();
         $this->agribank();
         $this->mbbank('https://thebank.vn/cong-cu/tinh-ty-gia-ngoai-te/ty-gia-mbbank.html', $bankId = 6);
         $this->getExchangePageNganHang('https://bidv.ngan-hang.com/', 4); // bidv
@@ -72,6 +72,7 @@ class CloneController extends Controller
         $this->getExchangePageNganHang('https://vpbank.ngan-hang.com/', 10); //vpbank
         $this->getExchangePageNganHang('https://seabank.ngan-hang.com/', 7); //seabank
         $this->getExchangePageNganHang('https://vietcombank.ngan-hang.com/', 1); //vietcombank
+        $this->getExchangePageNganHang('https://techcombank.ngan-hang.com/', 9); //vietcombank
         //$this->bidv('https://tygia.vn/ty-gia/bidv/ngay-', 'bidv'); //lấy tygia.vn
         //$this->mbBank('https://tygia.vn/ty-gia/mbbank/ngay-', 'mbBank'); // lấy ở tygia.vn
         //$this->acb('https://tygia.vn/ty-gia/acb/ngay-', 'acb'); // tygia.vn
