@@ -57,7 +57,7 @@
                                 Tìm ATM
                             </a>
                         </li>
-                        <li class="nav-item dropdown  @if(strpos(url()->current(), 'lai-suat') != false){{'active'}}@endif">
+                        {{-- <li class="nav-item dropdown  @if(strpos(url()->current(), 'lai-suat') != false){{'active'}}@endif">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 Lãi suất <i class="fas fa-chevron-down fa-xs"></i>
@@ -73,6 +73,27 @@
                                         </li>
                                     @endif
                                 @endforeach
+                            </ul>
+                        </li> --}}
+                        <li class="dropdown nav-item">
+                            <a href="properties.html" class="nav-link" data-toggle="dropdown">Lãi suất<i class="fas fa-chevron-down fa-xs"></i></a>
+                            <ul class="dropdown-menu megamenu dropdown-menu-lg">
+                                <li>
+                                    <div class="row sub-menu">
+                                        @foreach($viewShare['bank'] as $bankItem)
+                                            <div class="col-sm-4 mb-2 mb-sm-0">
+                                                <ul class="list-unstyled mt-lg-3">
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                        href="{{ route('interest-rate', ['slug' => str_slug($bankItem->name_en), 'id' => $bankItem->id]) }}">
+                                                            {{$bankItem->name_en}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </li>
                             </ul>
                         </li>
                         {{-- <li class="nav-item dropdown  @if(strpos(url()->current(), 'ty-gia') != false){{'active'}}@endif">
