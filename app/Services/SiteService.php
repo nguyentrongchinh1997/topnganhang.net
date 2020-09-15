@@ -123,7 +123,12 @@ class SiteService
 			$latestNews = $this->newsModel->latest()->take(6)->get();
 			$branchAll = $this->branchModel->where('bank_id', $bankId)
 										   ->get();
-			$branchRandom = $branchAll->random(10);
+			
+			if (count($branchAll) >= 10) {
+				$branchRandom = $branchAll->random(10);
+			} else {
+				$branchRandom = $branchAll;
+			}
 			
 			return [
 				'bank' => $bank,

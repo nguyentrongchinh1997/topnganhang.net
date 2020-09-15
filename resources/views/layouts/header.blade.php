@@ -91,7 +91,12 @@
                                 @endforeach
                             </ul>
                         </li>
-                        <li class="nav-item dropdown  @if(strpos(url()->current(), 'chi-nhanh-') != false){{'active'}}@endif">
+                        <li class="nav-item dropdown @if(strpos(url()->current(), 'tim-atm') != false){{'active'}}@endif">
+                            <a class="nav-link dropdown-toggle" href="/chi-nhanh-ngan-hang-ngoai-thuong">
+                                Chi nhánh
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item dropdown  @if(strpos(url()->current(), 'chi-nhanh-') != false){{'active'}}@endif">
                             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 Chi nhánh <i class="fas fa-chevron-down fa-xs"></i>
@@ -106,7 +111,7 @@
                                 </li>
                                 @endforeach
                             </ul>
-                        </li>
+                        </li> --}}
                         <li id="bank-intro" class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">

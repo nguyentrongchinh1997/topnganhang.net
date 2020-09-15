@@ -14,7 +14,9 @@ class Bank extends Model
     	'slug',
     	'image',
     	'description',
-    	'content'
+		'content',
+		'web',
+		'link'
 	];
 	
 	public function atm()

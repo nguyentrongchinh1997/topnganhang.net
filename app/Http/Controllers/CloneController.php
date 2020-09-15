@@ -58,6 +58,48 @@ class CloneController extends Controller
                                 color: red;
                             }
                         </style>';
+    
+    public function getBank()
+    {
+        $link = 'https://ngan-hang.com/';
+        $html = file_get_html_custom($link);
+        $content = '';
+
+        foreach ($html->find('.table-striped article a') as $link) {
+            $html = file_get_html_custom($link->href);
+            $name = explode('https://', $link->href)[1];
+            $name = explode('.', $name)[0];
+
+            if (!empty($html->find('.art_b'))) {
+                $content = $html->find('.art_b', 0)->innertext;
+                if (!empty($html->find('.art_b.ads'))) {
+                    $ads = $html->find('.art_b .ads', 0)->outertext;
+                    $content = str_replace($ads, '', $content);
+                }
+            } else if (!empty($html->find('.page-body'))) {
+                $content = $html->find('.page-body', 0)->innertext;
+                if (!empty($html->find('.page-body .ads'))) {
+                    $ads = $html->find('.page-body .ads', 0)->outertext;
+                    $content = str_replace($ads, '', $content);
+                }
+            }
+            
+            $check = Bank::where('link', $link->href)->first();
+
+            if (empty($check)) {
+                Bank::create(
+                    [
+                        'link' => $link->href,
+                        'name_en' => ucfirst($name),
+                        'name_vi' => $link->plaintext,
+                        'image' =>str_slug($link->plaintext) . '.jpg',
+                        'slug' => str_slug($link->plaintext),
+                        'content' => $content,
+                    ]
+                );
+            }
+        }
+    }
                         
     public function tyGia()
     {
@@ -66,13 +108,20 @@ class CloneController extends Controller
         //$this->techcombank();
         $this->agribank();
         $this->mbbank('https://thebank.vn/cong-cu/tinh-ty-gia-ngoai-te/ty-gia-mbbank.html', $bankId = 6);
-        $this->getExchangePageNganHang('https://bidv.ngan-hang.com/', 4); // bidv
-        $this->getExchangePageNganHang('https://acb.ngan-hang.com/', 3); // acb
-        $this->getExchangePageNganHang('https://maritime.ngan-hang.com/', 8); //maritime
-        $this->getExchangePageNganHang('https://vpbank.ngan-hang.com/', 10); //vpbank
-        $this->getExchangePageNganHang('https://seabank.ngan-hang.com/', 7); //seabank
-        $this->getExchangePageNganHang('https://vietcombank.ngan-hang.com/', 1); //vietcombank
-        $this->getExchangePageNganHang('https://techcombank.ngan-hang.com/', 9); //vietcombank
+        $banks = Bank::all();
+
+        foreach ($banks as $bankItem) {
+            if (!in_array($bankItem->id, [2, 11, 5, 6])) {
+                $this->getExchangePageNganHang($bankItem->link, $bankItem->id); // bidv
+            }
+        }
+        // $this->getExchangePageNganHang('https://bidv.ngan-hang.com/', 4); // bidv
+        // $this->getExchangePageNganHang('https://acb.ngan-hang.com/', 3); // acb
+        // $this->getExchangePageNganHang('https://maritime.ngan-hang.com/', 8); //maritime
+        // $this->getExchangePageNganHang('https://vpbank.ngan-hang.com/', 10); //vpbank
+        // $this->getExchangePageNganHang('https://seabank.ngan-hang.com/', 7); //seabank
+        // $this->getExchangePageNganHang('https://vietcombank.ngan-hang.com/', 1); //vietcombank
+        // $this->getExchangePageNganHang('https://techcombank.ngan-hang.com/', 9); //vietcombank
         //$this->bidv('https://tygia.vn/ty-gia/bidv/ngay-', 'bidv'); //lấy tygia.vn
         //$this->mbBank('https://tygia.vn/ty-gia/mbbank/ngay-', 'mbBank'); // lấy ở tygia.vn
         //$this->acb('https://tygia.vn/ty-gia/acb/ngay-', 'acb'); // tygia.vn
@@ -315,28 +364,46 @@ class CloneController extends Controller
         );        
     }
 
-    public function getBranch()
+    public function getMultipleBranch()
+    {
+        try {
+            $banks = Bank::all();
+
+            foreach ($banks as $bankItem) {
+                $this->getBranch($bankItem->link, $bankItem->id);
+            }
+        } catch (\Throwable $th) {
+            echo $th->getMessage() . ': ' . $th->getLine() . '<hr>';
+        }
+    }
+
+    public function getBranch($domain, $bankId)
     {
     	try {
-            $random = rand(1, 11);
-            $array = config('config.link')[$random];
-            $domain = $array['domain'];
-            $bankId = $array['bank_id'];
+            // $random = rand(176, 177);
+            // $array = config('config.link')[$random];
+            // $domain = $array['domain'];
+            // $bankId = $array['bank_id'];
     		$html = file_get_html_custom($domain);
             
             if (!empty($html->find('ul.s1_l'))) {
                 $provinces = $html->find('ul.s1_l li');
+                $type = 1;
             } else if (!empty($html->find('ul.list-cities'))) {
                 $provinces = $html->find('ul.list-cities li');
+                $type = 2;
             }
 
     		foreach ($provinces as $tinh) {
-                $province = trim($tinh->find('a', 0)->plaintext);
                 
-                if (in_array($bankId, [6, 7, 8])) {
+                if ($type == 2) {
+                    $province = $tinh->find('a', 0)->plaintext;
                     $link = $domain . $tinh->find('a', 0)->href;
-                } else {
+                } else if ($type == 1) {
                     $link = $tinh->find('a', 0)->href;
+                    $province = $tinh->find('a', 0)->plaintext;
+                    $span = $tinh->find('a span', 0)->plaintext;
+                    $province = trim(str_replace($span, '', $province));
                 }
                 
                 $provinceCheck = Province::where('slug', str_slug($province))->first();
