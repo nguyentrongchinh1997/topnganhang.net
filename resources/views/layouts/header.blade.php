@@ -75,11 +75,6 @@
                                 @endforeach
                             </ul>
                         </li>
-                        <li class="nav-item dropdown @if(strpos(url()->current(), 'ty-gia') != false){{'active'}}@endif">
-                            <a class="nav-link dropdown-toggle" href="/ty-gia/vietcombank-1">
-                                Tỷ giá
-                            </a>
-                        </li>
                         {{-- <li class="nav-item dropdown  @if(strpos(url()->current(), 'ty-gia') != false){{'active'}}@endif">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" href="#" aria-expanded="false">
@@ -96,10 +91,26 @@
                                 @endforeach
                             </ul>
                         </li> --}}
-                        <li class="nav-item dropdown @if(strpos(url()->current(), 'chi-nhanh') != false){{'active'}}@endif">
-                            <a class="nav-link dropdown-toggle" href="/chi-nhanh-ngan-hang-ngoai-thuong">
-                                Chi nhánh
-                            </a>
+                        <li class="dropdown nav-item">
+                            <a href="properties.html" class="nav-link" data-toggle="dropdown">Tỷ giá<i class="fas fa-chevron-down fa-xs"></i></a>
+                            <ul class="dropdown-menu megamenu dropdown-menu-lg">
+                                <li>
+                                    <div class="row sub-menu">
+                                        @foreach($viewShare['bank'] as $bankItem)
+                                            <div class="col-sm-4 mb-2 mb-sm-0">
+                                                <ul class="list-unstyled mt-lg-3">
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                        href="{{ route('exchange-rate', ['slug' => str_slug($bankItem->name_en), 'id' => $bankItem->id]) }}">
+                                                            {{$bankItem->name_en}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </li>
+                            </ul>
                         </li>
                         {{-- <li class="nav-item dropdown  @if(strpos(url()->current(), 'chi-nhanh-') != false){{'active'}}@endif">
                             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"
@@ -117,7 +128,28 @@
                                 @endforeach
                             </ul>
                         </li> --}}
-                        <li id="bank-intro" class="nav-item dropdown">
+                        <li class="dropdown nav-item">
+                            <a href="properties.html" class="nav-link" data-toggle="dropdown">Chi nhánh<i class="fas fa-chevron-down fa-xs"></i></a>
+                            <ul class="dropdown-menu megamenu dropdown-menu-lg">
+                                <li>
+                                    <div class="row sub-menu">
+                                        @foreach($viewShare['bank'] as $bankItem)
+                                            <div class="col-sm-4 mb-2 mb-sm-0">
+                                                <ul class="list-unstyled mt-lg-3">
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('bank', ['slug' => $bankItem->slug]) }}">
+                                                            {{$bankItem->name_en}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        {{-- <li id="bank-intro" class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 Ngân hàng <i class="fas fa-chevron-down fa-xs"></i>
@@ -131,6 +163,27 @@
                                     </a>
                                 </li>
                                 @endforeach
+                            </ul>
+                        </li> --}}
+                        <li class="dropdown nav-item">
+                            <a href="properties.html" class="nav-link" data-toggle="dropdown">Ngân hàng<i class="fas fa-chevron-down fa-xs"></i></a>
+                            <ul class="dropdown-menu megamenu dropdown-menu-lg">
+                                <li>
+                                    <div class="row sub-menu">
+                                        @foreach($viewShare['bank'] as $bankItem)
+                                            <div class="col-sm-4 mb-2 mb-sm-0">
+                                                <ul class="list-unstyled mt-lg-3">
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('bank-intro', ['slug' => str_slug($bankItem->name_en), 'id' => $bankItem->id]) }}">
+                                                            {{$bankItem->name_en}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown  @if(strpos(url()->current(), 'swift-code') != false){{'active'}}@endif">
