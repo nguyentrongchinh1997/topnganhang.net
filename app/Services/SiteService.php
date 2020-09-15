@@ -151,7 +151,12 @@ class SiteService
 			$latestNews = $this->newsModel->latest()->take(6)->get();
 			$branchAll = $this->branchModel->where('bank_id', $bankId)
 										   ->get();
-			$branchRandom = $branchAll->random(10);
+			
+			if (count($branchAll) >= 10) {
+				$branchRandom = $branchAll->random(10);
+			} else {
+				$branchRandom =$branchAll;
+			}
 
 			return [
 				'bank' => $bank,
@@ -237,7 +242,13 @@ class SiteService
 			$bank = $this->bankModel->findOrFail($bankId);
 			$branchAll = $this->branchModel->where('bank_id', $bankId)
 									  ->get();
-			$branchRandom = $branchAll->random(10);
+			
+			if (count($branchAll) >= 10) {
+				$branchRandom = $branchAll->random(10);
+			} else {
+				$branchRandom = $branchAll;
+			}
+			
 			return [
 				'bank' => $bank,
 				'branchRandom' => $branchRandom,
@@ -301,8 +312,12 @@ class SiteService
 			$atm = $this->atmModel->findOrFail($id);
 			$otherAtm = $this->atmModel->where('id', '!=', $id)
 									   ->where('province_id', $atm->province_id)
-									   ->get()
-									   ->random(20);
+									   ->get();
+			
+			if (count($otherAtm) >= 20) {
+				$otherAtm = $otherAtm->random(20);
+			}
+
 			return [
 				'atm' => $atm,
 				'otherAtm' => $otherAtm
@@ -388,8 +403,11 @@ class SiteService
 		$districtTheBank = $this->districtModel->all();
 		$bank_id = rand(1, 3);
 		$atms = $this->atmModel->where('bank_id', $bank_id)
-							   ->get()
-							   ->random(30);
+							   ->get();
+
+		if (count($atms) >= 30) {
+			$atms = $atms->random(30);
+		}
 		
 		return [
 			'banks' => $banks,
