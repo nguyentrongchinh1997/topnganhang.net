@@ -425,61 +425,61 @@ class CloneController extends Controller
     	}
     }
 
+    public function getMultipleAtm()
+    {
+        try {
+            $banks = Bank::where('id', '>', 11)->get();
+
+            foreach ($banks as $bankItem) {
+                $this->getAtm($bankItem->link, $bankItem->id);
+            }
+        } catch (\Throwable $th) {
+            echo $th->getMessage() . ': ' . $th->getLine() . '<hr>';
+        }
+    }
+
     /**
      * Ngân hàng không có trong ngan-hang.com: maritime bank
      * Ngân hàng khác cấu trúc html với các ngân hàng còn lại: mbbank, seabank
      * @return void
      */
-    public function getAtm()
+    public function getAtm($domain, $bankId)
     {
         try {
-            $rand = rand(1, 11);
-            $array = config('config.link')[$rand];
-            $domain = $array['domain'] . 'atm';
-            $bankId = $array['bank_id'];
-            $html = file_get_html_custom($domain);
+            $linkAtm = $domain . '/atm';
+            $html = file_get_html_custom($linkAtm);
             
-            if ($bankId != 8) {
-                if (in_array($bankId, [6, 7])) {
-                    $provinces = $html->find('ul.list-cities li');
-                } else {
-                    $provinces = $html->find('ul.s1_l li');
-                }
+            if (!empty($html->find('ul.list-cities li'))) {
+                $provinces = $html->find('ul.list-cities li');
+                $type = 1;
+            } else if (!empty($html->find('ul.s1_l li'))) {
+                $type = 2;
+                $provinces = $html->find('ul.s1_l li');
             }
 
-    		//foreach ($html->find('ul.list-cities li') as $tinh) { Dành cho seabnk và mbbank
             foreach ($provinces as $tinh) {
-                /**
-                 * Dành cho mbbank và seabank
-                 * $province = trim($tinh->find('a', 0)->plaintext);
-                 * $province = trim(explode('(', $province)[0]);
-                 * $link = $domain . $tinh->find('a', 0)->href;
-                 */
-
-                if ($bankId != 8) {
-                    if (in_array($bankId, [6, 7])) {
-                        $province = trim($tinh->find('a', 0)->plaintext);
-                        $province = trim(explode('(', $province)[0]);
-                        $link = $array['domain'] . $tinh->find('a', 0)->href;
-                    } else {
-                        $province = trim($tinh->find('a', 0)->plaintext);
-                        $span = $tinh->find('span', 0)->plaintext;
-                        $province = trim(\str_replace($span, '', $province));
-                        $link = $tinh->find('a', 0)->href;
-                    }
+                if ($type == 1) {
+                    $province = trim($tinh->find('a', 0)->plaintext);
+                    $province = trim(explode('(', $province)[0]);
+                    $link = $domain . $tinh->find('a', 0)->href;
+                } else if ($type == 2) {
+                    $province = trim($tinh->find('a', 0)->plaintext);
+                    $span = $tinh->find('span', 0)->plaintext;
+                    $province = trim(\str_replace($span, '', $province));
+                    $link = $tinh->find('a', 0)->href;
                 }
                 
                 $provinceCheck = Province::where('slug', str_slug($province))->first();
 
                 if (!empty($provinceCheck)) {
-                    $this->districtAtm($link, $provinceCheck->id, $domain, $bankId, $array);
+                    $this->districtAtm($link, $provinceCheck->id, $bankId, $domain);
                 } else {
                     $provinceResult = Province::create([
                         'slug' => str_slug($province),
                         'name' => $province
                     ]);
 
-                    $this->districtAtm($link, $provinceResult->id, $domain, $bankId, $array);
+                    $this->districtAtm($link, $provinceResult->id, $bankId, $domain);
                 }
     		}
         } catch (\Throwable $th) {
@@ -489,31 +489,29 @@ class CloneController extends Controller
         }
     }
 
-    public function districtAtm($link, $provinceId, $domain, $bankId, $array)
+    public function districtAtm($link, $provinceId, $bankId, $domain)
     {
         $html = file_get_html_custom($link);
 
-        if ($bankId != 8) {
-            if (in_array($bankId, [6, 7])) {
-                $districts = $html->find('.content table.table tr');
-            } else {
-                $districts = $html->find('ul.s1_l li');
-            }
+        if (!empty($html->find('.content table.table tr'))) {
+            $districts = $html->find('.content table.table tr');
+            $type = 1;
+        } else if (!empty($html->find('ul.s1_l li'))) {
+            $districts = $html->find('ul.s1_l li');
+            $type = 2;
         }
 
     	foreach ($districts as $district) {
-            if ($bankId != 8) {
-                if (in_array($bankId, [6, 7])) {
-                    $name = trim($district->plaintext);
-                    $rigth = $district->find('.cright', 0)->plaintext;
-                    $name = str_replace($rigth, '', $name);
-                    $link = $array['domain'] . $district->find('a', 0)->href;
-                } else {
-                    $name = trim($district->find('a', 0)->plaintext);
-                    $span = $district->find('span', 0)->plaintext;
-                    $name = trim(\str_replace($span, '', $name));
-                    $link = $district->find('a', 0)->href;
-                }
+            if ($type == 1) {
+                $name = trim($district->plaintext);
+                $rigth = $district->find('.cright', 0)->plaintext;
+                $name = str_replace($rigth, '', $name);
+                $link = $domain . $district->find('a', 0)->href;
+            } else if ($type == 2) {
+                $name = trim($district->find('a', 0)->plaintext);
+                $span = $district->find('span', 0)->plaintext;
+                $name = trim(\str_replace($span, '', $name));
+                $link = $district->find('a', 0)->href;
             }
             
             $checkDistrict = District::where('slug', str_slug($name))
@@ -521,7 +519,7 @@ class CloneController extends Controller
                                       ->first();
 
             if (!empty($checkDistrict)) {
-                $this->atmAdd($link, $checkDistrict->id, $domain, $provinceId, $bankId, $array);
+                $this->atmAdd($link, $checkDistrict->id, $provinceId, $bankId, $domain);
             } else {
                 $districtResult = District::create(
                     [
@@ -530,7 +528,7 @@ class CloneController extends Controller
                         'name' => $name,
                     ]
                 );
-                $this->atmAdd($link, $districtResult->id, $domain, $provinceId, $bankId, $array);
+                $this->atmAdd($link, $districtResult->id, $provinceId, $bankId, $domain);
             }
 		}
     }
@@ -645,47 +643,35 @@ class CloneController extends Controller
         }
     }
 
-    public function atmAdd($link, $districtId, $domain, $provinceId, $bankId, $array)
+    public function atmAdd($link, $districtId, $provinceId, $bankId, $domain)
     {
         $other_info = NULL;
-    	$html = file_get_html_custom($link);
-
-        /**
-         * Dành cho seabank và mbbank
-         * if (!empty($html->find('ul.s2_l'))) {
-		    *foreach ($html->find('ul.s2_l li') as $li) {
-         * if (!empty($html->find('.content ul li.list-group-item'))) {
-	     * foreach ($html->find('.content ul li.list-group-item') as $li) {
-         */
-
-        /**
-         * Dành cho ngân hàng còn lại
-         */
-        if ($bankId != 8) {
-            if (in_array($bankId, [6, 7])) {
-                $element = $html->find('.content ul li.list-group-item');
-            } else {
-                $element = $html->find('ul.s2_l li');
-            }
+        $html = file_get_html_custom($link);
+        
+        if (!empty($html->find('.content ul li.list-group-item'))) {
+            $element = $html->find('.content ul li.list-group-item');
+            $type = 1;
+        } else if (!empty($html->find('ul.s2_l li'))) {
+            $type = 2;
+            $element = $html->find('ul.s2_l li');
         }
-        foreach ($element as $li) {
-            if ($bankId != 8) {
-                if (in_array($bankId, [6, 7])) {
-                    $name = $li->find('a', 0)->plaintext;
-                    $address = trim($li->find('p', 0)->plaintext);
-                    $url = $array['domain'] . $li->find('a', 0)->href;
-                    $html = file_get_html_custom($url);
-                    $other_info = '';
 
-                    foreach ($html->find('.content p') as $info) {
-                        $other_info = $other_info . $info->outertext;
-                    }
-                } else {
-                    $address = $li->find('p', 0)->plaintext;
-                    $name = $li->find('h3', 0)->plaintext;
-                    $url = $li->find('a', 0)->href;
-                    $other_info = $this->getOtherInfo($url);
+        foreach ($element as $li) {
+            if ($type == 1) {
+                $name = $li->find('a', 0)->plaintext;
+                $address = trim($li->find('p', 0)->plaintext);
+                $url = $domain. $li->find('a', 0)->href;
+                $html = file_get_html_custom($url);
+                $other_info = '';
+
+                foreach ($html->find('.content p') as $info) {
+                    $other_info = $other_info . $info->outertext;
                 }
+            } else if ($type == 2) {
+                $address = $li->find('p', 0)->plaintext;
+                $name = $li->find('h3', 0)->plaintext;
+                $url = $li->find('a', 0)->href;
+                $other_info = $this->getOtherInfo($url);
             }
 
             Atm::updateOrCreate(

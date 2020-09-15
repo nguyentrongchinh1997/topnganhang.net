@@ -74,7 +74,7 @@ Route::post('get-exchange', 'SiteController@getExchange')->name('get-exchange');
 //Route::get('tool-the-bank', 'CloneController@theBank') lấy ATM trang thebank;
 //Route::get('clone', 'CloneController@getBranch');
 Route::get('clone-branch', 'CloneController@getMultipleBranch');
-Route::get('get-atm', 'CloneController@getAtm');
+Route::get('clone-atm', 'CloneController@getMultipleAtm');
 Route::get('get-exchange', 'CloneController@tyGia');
 Route::get('update', 'CloneController@updateDb');
 Route::get('msb', 'CloneController@msm');

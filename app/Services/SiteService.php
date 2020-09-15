@@ -238,7 +238,12 @@ class SiteService
 			$bank = $this->bankModel->findOrFail($bankId);
 			$branchAll = $this->branchModel->where('bank_id', $bankId)
 									  ->get();
-			$branchRandom = $branchAll->random(10);
+			if (count($branchAll) >= 10) {
+				$branchRandom = $branchAll->random(10);
+			} else {
+				$branchRandom = $branchAll;
+			}
+			
 			return [
 				'bank' => $bank,
 				'branchRandom' => $branchRandom,
@@ -284,14 +289,10 @@ class SiteService
 			$branchs = $this->branchModel->where('bank_id', $bank->id)
 										 ->where('district_id', $district->id)
 										 ->paginate(30);
-			$string = Cache::remember('district_bank', 1440, function() use ($bank, $district){
-				$bankName = $bank->name_en;
-				$districtName = $district->name;
-				$province = $district->province->name;
-				$string = "Chi nhánh ngân hàng <b>$bankName</b>, chi nhánh $districtName ngân hàng <b>$bankName</b>, chi nhánh ngân hàng <b>$bankName</b> tại $districtName, địa chỉ chi nhánh ngân hàng <b>$bankName</b> tại $districtName $province, chi nhánh ngân hàng $bankName tại $province";
-
-				return $string;
-			});
+			$bankName = $bank->name_en;
+			$districtName = $district->name;
+			$province = $district->province->name;
+			$string = "Chi nhánh ngân hàng <b>$bankName</b>, chi nhánh $districtName ngân hàng <b>$bankName</b>, chi nhánh ngân hàng <b>$bankName</b> tại $districtName, địa chỉ chi nhánh ngân hàng <b>$bankName</b> tại $districtName $province, chi nhánh ngân hàng $bankName tại $province";
 
 			return [
 				'bank' => $bank,
@@ -374,13 +375,18 @@ class SiteService
 												$query->where('bank_id', $bankId);
 											 })
 											 ->get();
-			$atms = $this->atmModel->where('bank_id', $bankId)->get()->random(20);
+			$atms = $this->atmModel->where('bank_id', $bankId)->get();
+
+			if (count($atms) >= 20) {
+				$atms = $atms->random(20);
+			}
+
 			$bank = $this->bankModel->findOrFail($bankId);
 
 			return [
 				'provinces' => $provinces,
 				'bank' => $bank,
-				'atms' => $atms
+				'atms' => $atms,
 			];
 		} catch (\Throwable $th) {
 			return NULL;

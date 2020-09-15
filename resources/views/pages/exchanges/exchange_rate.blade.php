@@ -33,39 +33,44 @@
                     <h2 style="margin-bottom: 20px">
                         Tỷ giá ngân hàng {{ $bank->name_en }}
                     </h2>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <p style="margin: 17px 0px 0px">
-                                Cập nhật ngày {{ date('d/m/Y', strtotime($exchangeRate->date)) }}
-                            </p>
+                    @if(!empty($exchangeRate))
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <p style="margin: 17px 0px 0px">
+                                    Cập nhật ngày {{ date('d/m/Y', strtotime($exchangeRate->date)) }}
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <form style="margin-bottom: 10px; float: right"
+                                    action="{{ route('exchange-rate-search', ['id' => $bank->id]) }}" method="post">
+                                    @csrf
+                                    <input id="form-exchange" value="{{ $exchangeRate->date }}" name="date" type="date">
+                                    <button type="submit" id="exchange-submit" class="btn btn-primary mt-3">Tìm kiếm</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="col-lg-6">
-                            <form style="margin-bottom: 10px; float: right"
-                                action="{{ route('exchange-rate-search', ['id' => $bank->id]) }}" method="post">
-                                @csrf
-                                <input id="form-exchange" value="{{ $exchangeRate->date }}" name="date" type="date">
-                                <button type="submit" id="exchange-submit" class="btn btn-primary mt-3">Tìm kiếm</button>
-                            </form>
+                        <div class="exchange-rate">
+                            {!! $exchangeRate->content !!}
                         </div>
-                    </div>
-                    <div class="exchange-rate">
-                        {!! $exchangeRate->content !!}
-                    </div>
+                    @else
+                        <div class="alert alert-danger">
+                            Đang cập nhật...
+                        </div>
+                    @endif
                     <style>
                         .exchange-rate table a{
                             color: #333;
                         }
                     </style>
                     <p>
-                        Tỷ giá ngân hàng {{ $bank->name_en }}, tỷ giá hôm này, tỷ giá ngày
-                        {{ date('d/m/Y', strtotime($exchangeRate->date)) }}, tỷ giá đô la, tỷ giá yên nhật, tỷ giá trung
+                        Tỷ giá ngân hàng {{ $bank->name_en }}, tỷ giá hôm này, tỷ giá đô la, tỷ giá yên nhật, tỷ giá trung
                         quốc,...
                     </p>
                     <h3>
                         Giới thiệu
                     </h3>
                     <div class="bank-intro">
-                        {!!$exchangeRate->bank->content!!}
+                        {!!$bank->content!!}
                     </div>
                     <h2>
                         Chi nhánh, PGD ngân hàng {{$bank->name_en}}

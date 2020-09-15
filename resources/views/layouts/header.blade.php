@@ -75,7 +75,12 @@
                                 @endforeach
                             </ul>
                         </li>
-                        <li class="nav-item dropdown  @if(strpos(url()->current(), 'ty-gia') != false){{'active'}}@endif">
+                        <li class="nav-item dropdown @if(strpos(url()->current(), 'ty-gia') != false){{'active'}}@endif">
+                            <a class="nav-link dropdown-toggle" href="/ty-gia/vietcombank-1">
+                                Tỷ giá
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item dropdown  @if(strpos(url()->current(), 'ty-gia') != false){{'active'}}@endif">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" href="#" aria-expanded="false">
                                 Tỷ giá <i class="fas fa-chevron-down fa-xs"></i>
@@ -90,8 +95,8 @@
                                     </li>
                                 @endforeach
                             </ul>
-                        </li>
-                        <li class="nav-item dropdown @if(strpos(url()->current(), 'tim-atm') != false){{'active'}}@endif">
+                        </li> --}}
+                        <li class="nav-item dropdown @if(strpos(url()->current(), 'chi-nhanh') != false){{'active'}}@endif">
                             <a class="nav-link dropdown-toggle" href="/chi-nhanh-ngan-hang-ngoai-thuong">
                                 Chi nhánh
                             </a>

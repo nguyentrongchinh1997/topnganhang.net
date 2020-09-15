@@ -1,10 +1,10 @@
 @extends('layouts.index')
 
-@section('title', 'Lãi suất ngân hàng ' . $interestRate->bank->name_en . ' | Tra cứu lãi suất ngân hàng ' .
-    $interestRate->bank->name_en)
+@section('title', 'Lãi suất ngân hàng ' . $bank->name_en . ' | Tra cứu lãi suất ngân hàng ' .
+    $bank->name_en)
 
-@section('description', 'Lãi suất ngân hàng ' . $interestRate->bank->name_en . ', lãi suất cho vay của ngân hàng ' .
-    $interestRate->bank->name_en . ', lãi suất gửi tiền tiết kiệm ngân hàng ' . $interestRate->bank->name_en)
+@section('description', 'Lãi suất ngân hàng ' . $bank->name_en . ', lãi suất cho vay của ngân hàng ' .
+    $bank->name_en . ', lãi suất gửi tiền tiết kiệm ngân hàng ' . $bank->name_en)
 
 @section('content')
     <section>
@@ -19,7 +19,7 @@
                         </li>
                         <li class="breadcrumb-item active">
                             <a href="{{ url()->current() }}">
-                                <span>Lãi suất ngân hàng {{ $interestRate->bank->name_en }}</span>
+                                <span>Lãi suất ngân hàng {{ $bank->name_en }}</span>
                             </a>
                         </li>
                     </ol>
@@ -31,11 +31,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <h2>Lãi suất ngân hàng {{ $interestRate->bank->name_en }} - Ngân hàng {{ $interestRate->bank->name_vi }}
+                    <h2>Lãi suất ngân hàng {{ $bank->name_en }} - Ngân hàng {{ $bank->name_vi }}
                     </h2>
                     <br>
                     <div class="content">
-                        {!! $interestRate->content !!}
+                        @if(!empty($interestRate))
+                            {!! $interestRate->content !!}
+                        @else
+                            <div class="alert alert-danger">
+                                <i>Đang cập nhật</i>
+                            </div>
+                        @endif
                     </div>
                     <h2>
                         Chi nhánh, PGD ngân hàng {{$bank->name_en}}

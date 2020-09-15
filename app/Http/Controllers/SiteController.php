@@ -103,7 +103,12 @@ class SiteController extends Controller
     {
         $latestNews = News::latest()->take(6)->get();
         $branchAll = Branch::where('bank_id', $bankId)->get();
-        $branchRandom = $branchAll->random(10);
+
+        if (count($branchAll) >= 10) {
+            $branchRandom = $branchAll->random(10);
+        } else {
+            $branchRandom = $branchAll;
+        }
         $bank = Bank::findOrFail($bankId);
 
         return view('pages.interests.interest_rate', [

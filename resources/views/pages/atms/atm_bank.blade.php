@@ -37,54 +37,63 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <h2 style="margin-bottom: 20px" title="Cây ATM {{ $bank->name_en }} các tỉnh thành">
-                        Cây ATM {{ $bank->name_en }} các tỉnh thành
-                    </h2>
-                    <div class="row">
-                        @foreach ($provinces as $provinceItem)
-                            <div class="col-lg-6">
-                                <div class="widget pb-3">
-                                    <a
-                                        href="{{ route('province-atm', ['bank' => str_slug($bank->name_en), 'province' => $provinceItem->slug, 'bank_id' => $bank->id, 'province_id' => $provinceItem->id]) }}">
-                                        <div class="docs-content">
-                                            <div class="docs-text">
-                                                {{ $provinceItem->name }}
-                                            </div>
-                                            <div class="docs-icon text-right">
-                                                {{ $provinceItem->atm->where('bank_id', $bank->id)->count() }}
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    <br>
-                    <h3>
-                        Cây ATM {{$bank->name_en}} tại các tỉnh thành
-                    </h3><br>
-                    <div class="row">
-                        @foreach($atms as $atmItem)
-                            <div class="col-lg-6 atm-district">
-                                <div class="job-list border" style="width: 100%">
-                                    <a href="{{ route('atm-detail', ['bank_name' => str_slug($bank->name_en), 'address' => $atmItem->slug, 'id' => $atmItem->id]) }}">
-                                        <div class="job-list-details">
-                                            <div class="job-list-info">
-                                                <div class="job-list-option">
-                                                    <ul class="list-unstyled">
-                                                        <li><i class="fas fa-map-marker-alt pr-1"></i>
-                                                            {{$atmItem->address}}
-                                                        </li>
-                                                    </ul>
+                    @if(count($provinces) > 0)
+                        <h2 style="margin-bottom: 20px" title="Cây ATM {{ $bank->name_en }} các tỉnh thành">
+                            Cây ATM {{ $bank->name_en }} các tỉnh thành
+                        </h2>
+                        <div class="row">
+                            @foreach ($provinces as $provinceItem)
+                                <div class="col-lg-6">
+                                    <div class="widget pb-3">
+                                        <a
+                                            href="{{ route('province-atm', ['bank' => str_slug($bank->name_en), 'province' => $provinceItem->slug, 'bank_id' => $bank->id, 'province_id' => $provinceItem->id]) }}">
+                                            <div class="docs-content">
+                                                <div class="docs-text">
+                                                    {{ $provinceItem->name }}
+                                                </div>
+                                                <div class="docs-icon text-right">
+                                                    {{ $provinceItem->atm->where('bank_id', $bank->id)->count() }}
                                                 </div>
                                             </div>
-                                        </div>
-                                    </a>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <br>
-                        @endforeach
-                    </div>
+                            @endforeach
+                        </div>
+                        <br>
+                    @endif
+                    @if(count($atms) > 0)
+                        <h3>
+                            Cây ATM {{$bank->name_en}} tại các tỉnh thành
+                        </h3><br>
+                        <div class="row">
+                            @foreach($atms as $atmItem)
+                                <div class="col-lg-6 atm-district">
+                                    <div class="job-list border" style="width: 100%">
+                                        <a href="{{ route('atm-detail', ['bank_name' => str_slug($bank->name_en), 'address' => $atmItem->slug, 'id' => $atmItem->id]) }}">
+                                            <div class="job-list-details">
+                                                <div class="job-list-info">
+                                                    <div class="job-list-option">
+                                                        <ul class="list-unstyled">
+                                                            <li><i class="fas fa-map-marker-alt pr-1"></i>
+                                                                {{$atmItem->address}}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <br>
+                            @endforeach
+                        </div>
+                    @endif
+                    @if(count($atms) == 0 && count($provinces) == 0)
+                        <div class="alert alert-danger">
+                            Điểm đặt cây ATM ngân hàng {{$bank->name_en}} - {{$bank->name_vi}} đang được cập nhật
+                        </div>
+                    @endif
                 </div>
                 <div class="col-lg-4">
                     <div class="blog-sidebar">
