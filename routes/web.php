@@ -11,6 +11,7 @@
 |
 */
 Route::get('/', 'SiteController@home')->name('index');
+Route::get('sitemap', 'SiteController@sitemap');
 
 /*=============================================Tin tức================================*/
 Route::get('tin-tuc', 'SiteController@news')->name('news');

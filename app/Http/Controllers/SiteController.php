@@ -39,6 +39,16 @@ class SiteController extends Controller
     {
         return view('pages.home', $this->siteService->home());
     }
+    
+    public function sitemap()
+    {
+        $data = [
+            'banks' => Bank::all(),
+            'districts' => District::all(),
+        ];
+        
+        return view('pages.sitemap', $data);
+    }
 
     public function news()
     {

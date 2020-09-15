@@ -3,9 +3,6 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="HTML5 Template" />
-    <meta name="description" content="Jobber - Job Board HTML5 Template" />
-    <meta name="author" content="potenzaglobalsolutions.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@yield('title')</title>
     <meta name="description" content="@yield('description')" />
@@ -18,7 +15,7 @@
 
     <!-- CSS Global Compulsory (Do not remove)-->
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome/all.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/flaticon/flaticon.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/flaticon/flatin ticon.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap/bootstrap.min.css') }}" />
 
     <!-- Page CSS Implementing Plugins (Remove the plugin CSS here if site does not use that feature)-->
@@ -133,7 +130,7 @@
                         </li>
                         <li class="nav-item dropdown  @if(strpos(url()->current(), 'tin-tuc') != false && strpos(url()->current(), 'swift-code') == false){{'active'}}@endif">
                             <a class="nav-link" href="{{ route('news') }}">
-                                Tin tức
+                                Bài viết
                             </a>
                         </li>
                     </ul>

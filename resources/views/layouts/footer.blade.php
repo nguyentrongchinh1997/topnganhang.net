@@ -9,13 +9,13 @@
             <div class="d-flex justify-content-md-start justify-content-center">
               <ul class="list-unstyled d-flex mb-0">
                 <li><a href="#">Chính sách</a></li>
-                <li><a href="about.html">Giới thiệu</a></li>
-                <li><a href="contact-us.html">Liên hệ</a></li>
+                <li><a href="#">Giới thiệu</a></li>
+                <li><a href="#">Liên hệ</a></li>
               </ul>
             </div>
           </div>
           <div class="col-md-6 text-center text-md-right mt-4 mt-md-0">
-            <p class="mb-0"> &copy;Copyright <span id="copyright"> <script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script></span> <a href="#"> Bank </a> All Rights Reserved </p>
+            <p class="mb-0"> &copy;Copyright <span id="copyright"> <script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script></span> <a href="{{asset('')}}"> Topnganhang.net </a> </p>
           </div>
         </div>
       </div>

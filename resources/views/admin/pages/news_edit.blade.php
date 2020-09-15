@@ -76,7 +76,7 @@
                     </div>
                     <div class="form-group">
                         <center>
-                            <button type="submit" class="btn btn-primary">Sửa</button>
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
                         </center>
                     </div>
                 </form>

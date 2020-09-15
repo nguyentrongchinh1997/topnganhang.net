@@ -75,9 +75,10 @@
                                     {{ date('d/m/Y', strtotime($newsItem->created_at)) }}
                                 </td>
                                 <td>
+                                    <a
+                                        href="{{ route('admin.news.edit.form', ['id' => $newsItem->id]) }}">Sửa</a> / 
                                     <a onclick="return newsDelete()"
-                                        href="{{ route('admin.news.delete', ['id' => $newsItem->id]) }}">Xóa</a> / <a
-                                        href="{{ route('admin.news.edit.form', ['id' => $newsItem->id]) }}">Sửa</a>
+                                        href="{{ route('admin.news.delete', ['id' => $newsItem->id]) }}">Xóa</a>
                                 </td>
                                 <script>
                                     function newsDelete() {
