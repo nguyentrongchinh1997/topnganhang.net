@@ -48,6 +48,13 @@
                                     name="name_en">
                             </div>
                         </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Website</label>
+                                <input value="{{ $bank->web }}" type="text" class="form-control"
+                                    name="web">
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Mổ tả ngắn <span class="mandatory">*</span></label>
