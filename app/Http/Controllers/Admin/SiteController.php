@@ -46,7 +46,7 @@ class SiteController extends Controller
             ]
         );
 
-        return back()->with('success', 'Sửa thành công');
+        return redirect()->route('admin.bank.list')->with('success', 'Sửa thành công');
     }
 
     public function interestRateForm($bankId)

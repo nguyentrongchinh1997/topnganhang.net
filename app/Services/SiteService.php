@@ -191,12 +191,12 @@ class SiteService
 		try {
 			$branch = $this->branchModel->findOrFail($branchId);
 
-			$cache = Cache::remember('branch_detail', 1440, function() use ($branchId, $branch) {
+			$cache = Cache::remember('branch_detail', 60, function() use ($branchId, $branch) {
 				$districtSameBranchs = $this->branchModel->where('id', '!=', $branchId)
 											 		 ->where('bank_id', $branch->bank_id)
 											 		 ->where('district_id', $branch->district_id)
 													 ->get();
-			
+
 				if (count($districtSameBranchs) >= 10) {
 					$districtSameBranchs = $districtSameBranchs->random(10);
 				}
@@ -206,26 +206,25 @@ class SiteService
 				if (count($otherBranchs) >= 10) {
 					$otherBranchs = $otherBranchs->random(10);
 				}
-				$bankName = $branch->bank->name_en;
-				$district = $branch->district->name;
-				$province = $branch->district->province->name;
-				$branchName = $branch->name;
-
-				$string = "Chi nhánh ngân hàng <b>$bankName</b>, chi nhánh $district ngân hàng <b>$bankName</b>, chi nhánh ngân hàng <b>$bankName</b> tại $district, $branchName ngân hàng <b>$bankName</b>, địa chỉ chi nhánh ngân hàng <b>$bankName</b> tại $district $province";
+				
 
 				return [
 						'districtSameBranchs' => $districtSameBranchs,
 						'otherBranchs' => $otherBranchs,
-						'string' => $string
 				];
 			});
+			$bankName = $branch->bank->name_en;
+			$district = $branch->district->name;
+			$province = $branch->district->province->name;
+			$branchName = $branch->name;
+			$string = "Chi nhánh ngân hàng <b>$bankName</b>, chi nhánh $district ngân hàng <b>$bankName</b>, chi nhánh ngân hàng <b>$bankName</b> tại $district, $branchName ngân hàng <b>$bankName</b>, địa chỉ chi nhánh ngân hàng <b>$bankName</b> tại $district $province";
 
 			return [
 				'branch' => $branch,
 				'bank' => $branch->bank,
 				'districtSameBranchs' => $cache['districtSameBranchs'],
 				'otherBranchs' => $cache['otherBranchs'],
-				'string' => $cache['string'],
+				'string' => $string,
 			];
 		} catch (\Throwable $th) {
 			return NULL;
@@ -238,12 +237,7 @@ class SiteService
 			$bank = $this->bankModel->findOrFail($bankId);
 			$branchAll = $this->branchModel->where('bank_id', $bankId)
 									  ->get();
-			if (count($branchAll) >= 10) {
-				$branchRandom = $branchAll->random(10);
-			} else {
-				$branchRandom = $branchAll;
-			}
-			
+			$branchRandom = $branchAll->random(10);
 			return [
 				'bank' => $bank,
 				'branchRandom' => $branchRandom,
@@ -261,15 +255,10 @@ class SiteService
 			$branchs = $province->branch->where('bank_id', $bank->id);
 			$data = $this->paginate($branchs);
 			$data->withPath(url()->current());
-
-			$string = Cache::remember('province_bank', 1440, function() use ($bank, $province){
-				$bankName = $bank->name_en;
-				$province = $province->name;
-				$string = "Chi nhánh ngân hàng <b>$bankName</b>, chi nhánh ngân hàng <b>$bankName</b> tại $province, địa chỉ chi nhánh ngân hàng <b>$bankName</b> tại $province, danh sách chi nhánh ngân hàng $bankName tại $province, tìm kiếm chi nhánh ngân hàng $bankName ở $province, $bankName $province";
-
-				return $string;
-			});
-
+			$bankName = $bank->name_en;
+			$provinceName = $province->name;
+			$string = "Chi nhánh ngân hàng <b>$bankName</b>, chi nhánh ngân hàng <b>$bankName</b> tại $provinceName, địa chỉ chi nhánh ngân hàng <b>$bankName</b> tại $provinceName, danh sách chi nhánh ngân hàng $bankName tại $provinceName, tìm kiếm chi nhánh ngân hàng $bankName ở $provinceName, $bankName $provinceName";
+			
 			return [
 				'province' => $province,
 				'bank' => $bank,
@@ -376,17 +365,16 @@ class SiteService
 											 })
 											 ->get();
 			$atms = $this->atmModel->where('bank_id', $bankId)->get();
-
+			
 			if (count($atms) >= 20) {
 				$atms = $atms->random(20);
 			}
-
 			$bank = $this->bankModel->findOrFail($bankId);
 
 			return [
 				'provinces' => $provinces,
 				'bank' => $bank,
-				'atms' => $atms,
+				'atms' => $atms
 			];
 		} catch (\Throwable $th) {
 			return NULL;
