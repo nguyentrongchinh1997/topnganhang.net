@@ -367,7 +367,7 @@ class CloneController extends Controller
     public function getMultipleBranch()
     {
         try {
-            $banks = Bank::all();
+            $banks = Bank::where('id', '>', 11)->get();
 
             foreach ($banks as $bankItem) {
                 $this->getBranch($bankItem->link, $bankItem->id);
