@@ -428,7 +428,7 @@ class CloneController extends Controller
     public function getMultipleAtm()
     {
         try {
-            $banks = Bank::where('id', '>', 11)->get();
+            $banks = Bank::whereIn('id', [34])->get();
 
             foreach ($banks as $bankItem) {
                 $this->getAtm($bankItem->link, $bankItem->id);
@@ -448,7 +448,7 @@ class CloneController extends Controller
         try {
             $linkAtm = $domain . '/atm';
             $html = file_get_html_custom($linkAtm);
-            
+
             if (!empty($html->find('ul.list-cities li'))) {
                 $provinces = $html->find('ul.list-cities li');
                 $type = 1;
@@ -494,7 +494,7 @@ class CloneController extends Controller
         $html = file_get_html_custom($link);
 
         if (!empty($html->find('.content table.table tr'))) {
-            $districts = $html->find('.content table.table tr');
+            $districts = $html->find('.col-md-8 .content table.table tr');
             $type = 1;
         } else if (!empty($html->find('ul.s1_l li'))) {
             $districts = $html->find('ul.s1_l li');
@@ -503,9 +503,7 @@ class CloneController extends Controller
 
     	foreach ($districts as $district) {
             if ($type == 1) {
-                $name = trim($district->plaintext);
-                $rigth = $district->find('.cright', 0)->plaintext;
-                $name = str_replace($rigth, '', $name);
+                $name = trim($district->find('td', 0)->plaintext);
                 $link = $domain . $district->find('a', 0)->href;
             } else if ($type == 2) {
                 $name = trim($district->find('a', 0)->plaintext);

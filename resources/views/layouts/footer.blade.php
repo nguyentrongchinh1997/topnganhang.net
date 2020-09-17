@@ -16,6 +16,9 @@
           </div>
           <div class="col-md-6 text-center text-md-right mt-4 mt-md-0">
             <p class="mb-0"> &copy;Copyright <span id="copyright"> <script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script></span> <a href="{{asset('')}}"> Topnganhang.net </a> </p>
+            <p>
+                Thông tin ngân hàng: Chi nhánh, tỷ giá, lãi suất, vị trí ATMcập nhật đầy đủ, nhanh chóng và chính xác nhất
+            </p>
           </div>
         </div>
       </div>

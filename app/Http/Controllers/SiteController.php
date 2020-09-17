@@ -24,7 +24,7 @@ class SiteController extends Controller
         $this->siteService = $siteService;
         $cache = Cache::remember('fixed', 60, function() {
             return [
-                    'bank' => Bank::all(),
+                    'bank' => Bank::take(11)->get(),
                     'province' => Province::all(),
                     'latestNews' => News::latest()->take(6)->get(),
                     'swift_code' => News::where('id', 6)->first(),
